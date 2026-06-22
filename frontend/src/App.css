@@ -177,13 +177,12 @@ input[type="checkbox"]:focus {
   }
 }
 
-/* Button Styles */
 .btn-primary {
   width: 100%;
-  padding: 12px;
+  padding: 10px;
   background: var(--color-red-primary);
   color: #ffffff;
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 600;
   line-height: 24px;
   border: none;
@@ -193,6 +192,7 @@ input[type="checkbox"]:focus {
   box-shadow: 0 4px 16px rgba(187, 1, 20, 0.2);
   position: relative;
   overflow: hidden;
+  min-width: 300px;
 }
 
 .btn-primary::before {
@@ -219,10 +219,10 @@ input[type="checkbox"]:focus {
 
 .btn-secondary {
   width: 100%;
-  padding: 12px;
+  padding: 10px;
   background: #ffffff;
   color: #5c403c;
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 600;
   line-height: 24px;
   border: 1px solid #ced4da;

@@ -1,4 +1,34 @@
-/* Dashboard.css */
+:root {
+  /* Primary Colors */
+  --color-primary: #EDE9DE;
+  --color-secondary: #FEB161;
+  --color-dark-gray: #1C2632;
+  --color-red-primary: #7A0101;
+  
+  /* Status Colors */
+  --color-success: #0F9918;
+  --color-warning: #FFB800;
+  --color-error: #EF4444;
+  --color-uploading: #3354BA;
+  
+  /* Extended Colors */
+  --color-white: #FFFFFF;
+  --color-black: #000000;
+  --color-text-primary: #1C2632;
+  --color-text-secondary: #5c403c;
+  --color-text-light: #6c757d;
+  
+  /* Border Colors */
+  --color-border: #ced4da;
+  --color-border-light: #e8e0dd;
+  --color-border-hover: #adb5bd;
+  
+  /* Background Colors */
+  --color-bg-primary: #EDE9DE;
+  --color-bg-white: #FFFFFF;
+  --color-bg-light: #f8f9fa;
+  --color-bg-hover: #f1f2f3;
+}
 .dashboard-container {
   min-height: 100vh;
   background-image: url("../../../assets/images/Dashboard.png");
@@ -33,13 +63,13 @@
 .dashboard-title {
   font-size: 30px;
   font-weight: 700;
-  color: #a51c24;
+  color: var(--color-red-primary);
 }
 
 .date-info {
   font-size: 10px;
   font-weight: 600;
-  color: #6b7280;
+  color: var(--color-text-secondary)  ;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   display: flex;

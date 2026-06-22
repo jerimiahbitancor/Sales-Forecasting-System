@@ -3,6 +3,7 @@ import Register from '../src/features/auth/pages/register/Register';
 import Login from '../src/features/auth/pages/login/Login';
 //import ForgotPassword from '../src/features/auth/pages/forgot-password/ForgotPassword';
 import Dashboard from './features/dashboard/pages/Dashboard';
+import DataManagement from './features/datamanagement/pages/DataManagement';
 import './App.css';
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path='/data-management' element={<DataManagement />} />
           {/* <Route path="/forgot-password" element={<ForgotPassword />} /> */}
         </Routes>
       </div>

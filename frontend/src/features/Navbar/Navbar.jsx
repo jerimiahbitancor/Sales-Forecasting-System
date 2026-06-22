@@ -1,5 +1,6 @@
 // components/Navbar.jsx
 import { useState } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { 
   FaChartBar,
   FaDatabase,
@@ -15,6 +16,7 @@ import './Navbar.css';
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -24,10 +26,21 @@ const Navbar = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
+  const handleNavigation = (path) => {
+    navigate(path);
+    setIsMobileMenuOpen(false);
+    setIsDropdownOpen(false);
+  };
+
+  const handleDropdownItemClick = (path) => {
+    navigate(path);
+    setIsDropdownOpen(false);
+  };
+
   return (
     <header className="navbar">
       {/* Logo and Brand */}
-      <div className="navbar-brand">
+      <div className="navbar-brand" onClick={() => handleNavigation('/')}>
         <div className="brand-logo">
           <img
             alt="Chef Duo Logo"
@@ -40,14 +53,23 @@ const Navbar = () => {
 
       {/* Navigation */}
       <nav className="navbar-nav">
-        <a className="nav-link active" href="#">
+        <NavLink 
+          to="/dashboard" 
+          className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+          onClick={() => setIsMobileMenuOpen(false)}
+        >
           <FaChartBar className="nav-icon" />
           Dashboard
-        </a>
-        <a className="nav-link" href="#">
+        </NavLink>
+
+        <NavLink 
+          to="/data-management" 
+          className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+          onClick={() => setIsMobileMenuOpen(false)}
+        >
           <FaDatabase className="nav-icon" />
           Data Management
-        </a>
+        </NavLink>
         
         {/* Analytics Dropdown */}
         <div className="nav-dropdown">
@@ -64,22 +86,34 @@ const Navbar = () => {
           
           {isDropdownOpen && (
             <div className="dropdown-menu">
-              <a href="#" className="dropdown-item">
+              <NavLink 
+                to="/forecasting" 
+                className={({ isActive }) => `dropdown-item ${isActive ? 'active' : ''}`}
+                onClick={() => handleDropdownItemClick('/forecasting')}
+              >
                 <FaChartPie className="dropdown-icon" />
                 Forecasting
-              </a>
-              <a href="#" className="dropdown-item">
+              </NavLink>
+              <NavLink 
+                to="/product-performance" 
+                className={({ isActive }) => `dropdown-item ${isActive ? 'active' : ''}`}
+                onClick={() => handleDropdownItemClick('/product-performance')}
+              >
                 <FaChartBar className="dropdown-icon" />
                 Product Performance
-              </a>
+              </NavLink>
             </div>
           )}
         </div>
 
-        <a className="nav-link" href="#">
+        <NavLink 
+          to="/settings" 
+          className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+          onClick={() => setIsMobileMenuOpen(false)}
+        >
           <FaCog className="nav-icon" />
           Settings
-        </a>
+        </NavLink>
       </nav>
 
       {/* Header Actions */}
@@ -90,7 +124,7 @@ const Navbar = () => {
         <button className="action-btn" aria-label="Help">
           <FaRegQuestionCircle className="action-icon" />
         </button>
-        <div className="profile-avatar">
+        <div className="profile-avatar" onClick={() => handleNavigation('/profile')}>
           <FaUserCircle className="profile-icon" />
         </div>
         
@@ -106,14 +140,24 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       <div className={`navbar-menu ${isMobileMenuOpen ? 'open' : ''}`}>
-        <a className="nav-link active" href="#">
+        <NavLink 
+          to="/" 
+          className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+          onClick={() => handleNavigation('/')}
+        >
           <FaChartBar className="nav-icon" />
           Dashboard
-        </a>
-        <a className="nav-link" href="#">
+        </NavLink>
+
+        <NavLink 
+          to="/data-management" 
+          className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+          onClick={() => handleNavigation('/data-management')}
+        >
           <FaDatabase className="nav-icon" />
           Data Management
-        </a>
+        </NavLink>
+
         <div className="mobile-dropdown">
           <button 
             className={`nav-link dropdown-toggle ${isDropdownOpen ? 'active' : ''}`}
@@ -125,21 +169,34 @@ const Navbar = () => {
           </button>
           {isDropdownOpen && (
             <div className="mobile-dropdown-menu">
-              <a href="#" className="dropdown-item">
+              <NavLink 
+                to="/forecasting" 
+                className={({ isActive }) => `dropdown-item ${isActive ? 'active' : ''}`}
+                onClick={() => handleDropdownItemClick('/forecasting')}
+              >
                 <FaChartPie className="dropdown-icon" />
                 Forecasting
-              </a>
-              <a href="#" className="dropdown-item">
+              </NavLink>
+              <NavLink 
+                to="/product-performance" 
+                className={({ isActive }) => `dropdown-item ${isActive ? 'active' : ''}`}
+                onClick={() => handleDropdownItemClick('/product-performance')}
+              >
                 <FaChartBar className="dropdown-icon" />
                 Product Performance
-              </a>
+              </NavLink>
             </div>
           )}
         </div>
-        <a className="nav-link" href="#">
+
+        <NavLink 
+          to="/settings" 
+          className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+          onClick={() => handleNavigation('/settings')}
+        >
           <FaCog className="nav-icon" />
           Settings
-        </a>
+        </NavLink>
       </div>
     </header>
   );
