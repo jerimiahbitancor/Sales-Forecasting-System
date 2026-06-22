@@ -1,0 +1,353 @@
+:root {
+  /* Primary Colors */
+  --color-primary: #EDE9DE;
+  --color-secondary: #FEB161;
+  --color-dark-gray: #1C2632;
+  --color-red-primary: #7A0101;
+  
+  /* Status Colors */
+  --color-success: #0F9918;
+  --color-warning: #FFB800;
+  --color-error: #EF4444;
+  --color-uploading: #3354BA;
+  
+  /* Extended Colors */
+  --color-white: #FFFFFF;
+  --color-black: #000000;
+  --color-text-primary: #1C2632;
+  --color-text-secondary: #5c403c;
+  --color-text-light: #6c757d;
+  
+  /* Border Colors */
+  --color-border: #ced4da;
+  --color-border-light: #e8e0dd;
+  --color-border-hover: #adb5bd;
+  
+  /* Background Colors */
+  --color-bg-primary: #EDE9DE;
+  --color-bg-white: #FFFFFF;
+  --color-bg-light: #f8f9fa;
+  --color-bg-hover: #f1f2f3;
+}
+
+.register-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-image: url('../../../../assets/images/Mask.png');
+  background-size: cover;
+  background-position: center;
+}
+
+.main-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 20px 16px;
+}
+
+.background-effects {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.bg-effect-top {
+  position: absolute;
+  top: -96px;
+  right: -96px;
+  width: 384px;
+  height: 384px;
+  background: radial-gradient(circle, rgba(187, 1, 20, 0.08), transparent 70%);
+  border-radius: 50%;
+  filter: blur(64px);
+}
+
+.bg-effect-bottom {
+  position: absolute;
+  bottom: -96px;
+  left: -96px;
+  width: 384px;
+  height: 384px;
+  background: radial-gradient(circle, rgba(253, 192, 3, 0.12), transparent 70%);
+  border-radius: 50%;
+  filter: blur(64px);
+}
+
+.registration-card {
+  width: 100%;
+  max-width: 400px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  box-shadow: 
+    0 4px 20px rgba(0, 0, 0, 0.06),
+    0 1px 4px rgba(0, 0, 0, 0.04);
+  padding: 24px 20px;
+  position: relative;
+  z-index: 10;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.registration-card:hover {
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.08),
+    0 1px 4px rgba(0, 0, 0, 0.04);
+}
+
+.brand-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.logo {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.logo:hover {
+  transform: scale(1.05) rotate(-5deg);
+}
+
+.brand-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #bb0114;
+  margin-bottom: 2px;
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, #bb0114, #e02929);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.brand-subtitle {
+  font-size: 13px;
+  color: #5c403c;
+  font-weight: 400;
+  letter-spacing: 0.2px;
+}
+
+.registration-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.password-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.terms-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 2px 0;
+}
+
+.checkbox-wrapper {
+  display: flex;
+  align-items: center;
+  padding-top: 1px;
+  flex-shrink: 0;
+}
+
+.terms-label {
+  font-size: 12px;
+  line-height: 1.4;
+  color: #5c403c;
+  cursor: pointer;
+}
+
+.terms-link {
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  color: #bb0114;
+}
+
+.terms-link:hover {
+  text-decoration: underline;
+}
+
+.social-section {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.divider-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.divider-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, #d4c8c4, transparent);
+}
+
+.divider-text {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  color: #a08a86;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+.social-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  width: 100%;
+}
+
+.login-prompt {
+  font-size: 13px;
+  color: #5c403c;
+  margin-top: 2px;
+}
+
+.login-link {
+  color: #bb0114;
+  font-weight: 700;
+  text-decoration: none;
+  margin-left: 4px;
+  transition: color 0.2s ease;
+}
+
+.login-link:hover {
+  text-decoration: underline;
+}
+
+.footer {
+  padding: 12px 0;
+  text-align: center;
+}
+
+.footer-text {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  color: rgba(92, 64, 60, 0.5);
+  text-transform: uppercase;
+}
+
+/* Responsive Styles */
+@media (min-width: 768px) {
+  .main-container {
+    padding: 40px 32px;
+  }
+  
+  .registration-card {
+    max-width: 420px;
+    padding: 32px 28px;
+  }
+  
+  .brand-title {
+    font-size: 28px;
+  }
+  
+  .logo {
+    width: 64px;
+    height: 64px;
+  }
+  
+  .signup-button {
+    font-size: 18px;
+    padding: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .registration-card {
+    padding: 20px 16px;
+    border-radius: 14px;
+    max-width: 100%;
+  }
+  
+  .brand-title {
+    font-size: 22px;
+  }
+  
+  .logo {
+    width: 48px;
+    height: 48px;
+  }
+  
+  .signup-button {
+    font-size: 16px;
+    padding: 11px;
+  }
+  
+  .social-buttons {
+    grid-template-columns: 1fr;
+  }
+  
+  .social-button {
+    padding: 10px;
+  }
+  
+  .form-input {
+    font-size: 13px;
+    padding: 9px 12px 9px 36px;
+  }
+  
+  .input-icon {
+    font-size: 15px;
+    left: 11px;
+  }
+  
+  .brand-subtitle {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 380px) {
+  .brand-title {
+    font-size: 20px;
+  }
+  
+  .brand-subtitle {
+    font-size: 11px;
+  }
+  
+  .registration-card {
+    padding: 16px 12px;
+    border-radius: 12px;
+  }
+  
+  .terms-label {
+    font-size: 11px;
+  }
+  
+  .form-label {
+    font-size: 10px;
+  }
+  
+  .signup-button {
+    font-size: 15px;
+    padding: 10px;
+  }
+}
