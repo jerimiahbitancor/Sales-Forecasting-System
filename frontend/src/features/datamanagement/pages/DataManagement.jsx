@@ -142,10 +142,7 @@ const DataManagement = () => {
                         Drag and drop your daily sales export below.
                       </p>
                     </div>
-                    <button className="download-template-btn">
-                      <FiDownload size={16} />
-                      Download Template
-                    </button>
+                    
                   </div>
 
                   {/* Drag and Drop Zone */}
