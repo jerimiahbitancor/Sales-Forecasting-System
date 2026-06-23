@@ -4,7 +4,10 @@ import Login from '../src/features/auth/pages/login/Login';
 //import ForgotPassword from '../src/features/auth/pages/forgot-password/ForgotPassword';
 import Dashboard from './features/dashboard/pages/Dashboard';
 import DataManagement from './features/datamanagement/pages/DataManagement';
+import Forecasting from './features/auth/pages/Analytics/Forecasting';
+import ProductPerformance from './features/auth/pages/Analytics/ProductPerformance';
 import './App.css';
+
 
 function App() {
   return (
@@ -16,6 +19,9 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path='/data-management' element={<DataManagement />} />
+          <Route path='/analytics' element={<Navigate to="/forecasting" replace />} />
+          <Route path='/forecasting' element={<Forecasting />} />
+          <Route path='/product-performance' element={<ProductPerformance />} />
           {/* <Route path="/forgot-password" element={<ForgotPassword />} /> */}
         </Routes>
       </div>
