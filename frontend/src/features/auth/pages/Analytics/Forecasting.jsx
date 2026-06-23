@@ -62,7 +62,7 @@ const Forecasting = () => {
           </div>
         </div>
 
-        <div className="main-content-grid">
+        <div className="main-content-grid1">
           <div className="chart-section">
             <div className="chart-header">
               <div>

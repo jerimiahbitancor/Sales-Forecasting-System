@@ -67,17 +67,12 @@
 }
 
 /* Content centering */
-.main-content-grid {
+.main-content-grid1 {
   width: 100%;
   display: block;
 }
 
-.chart-section {
-  width: 100%;
-  max-width: none;
-  display: block;
-  margin: 0;
-}
+
 
 .chart-container {
   width: 100%;
