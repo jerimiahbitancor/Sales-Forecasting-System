@@ -29,6 +29,7 @@
   --color-bg-light: #f8f9fa;
   --color-bg-hover: #f1f2f3;
 }
+
 .dashboard-container {
   min-height: 100vh;
   background-image: url("../../../assets/images/Dashboard.png");
@@ -69,7 +70,7 @@
 .date-info {
   font-size: 10px;
   font-weight: 600;
-  color: var(--color-text-secondary)  ;
+  color: var(--color-text-secondary);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   display: flex;
@@ -166,6 +167,7 @@
   display: flex;
   align-items: center;
   gap: 16px;
+  flex-wrap: wrap;
 }
 
 .metric-value {
@@ -426,20 +428,62 @@
   letter-spacing: 0.1em;
 }
 
-/* Right Panel */
+/* ========== RIGHT PANEL FIX ========== */
 .right-panel {
   display: flex;
   flex-direction: column;
   gap: 32px;
 }
 
+/* On screens between 768px and 1023px, make right panel cards side by side */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .right-panel {
+    flex-direction: row;
+    gap: 24px;
+  }
+  
+  .right-panel .placeholder-card {
+    flex: 1;
+    min-height: 180px;
+  }
+}
+
+/* On large screens (1024px+), stack them vertically in the right column */
+@media (min-width: 1024px) {
+  .right-panel {
+    flex-direction: column;
+    gap: 32px;
+  }
+  
+  .right-panel .placeholder-card {
+    flex: 1;
+    min-height: 220px;
+  }
+}
+
+/* On small screens (below 768px), stack vertically */
+@media (max-width: 767px) {
+  .right-panel {
+    flex-direction: column;
+    gap: 24px;
+  }
+  
+  .right-panel .placeholder-card {
+    min-height: 160px;
+  }
+}
+
 .placeholder-card {
-  flex: 1;
   background-color: #ffffff;
   border-radius: 16px;
   padding: 24px;
   box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 2px 10px -2px rgba(0, 0, 0, 0.03);
-  min-height: 220px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.placeholder-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px -2px rgba(0, 0, 0, 0.1);
 }
 
 .placeholder-content {
