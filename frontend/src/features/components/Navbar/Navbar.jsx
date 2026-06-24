@@ -1,6 +1,6 @@
 // components/Navbar.jsx
-import { useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { 
   FaChartBar,
   FaDatabase,
@@ -9,7 +9,8 @@ import {
   FaCog,
   FaRegBell,
   FaRegQuestionCircle,
-  FaUserCircle
+  FaUserCircle,
+  FaUser
 } from 'react-icons/fa';
 import './Navbar.css';
 
@@ -17,6 +18,22 @@ const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Check if any analytics sub-route is active
+  const isAnalyticsActive = location.pathname === '/forecasting' || 
+                           location.pathname === '/product-performance';
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (isDropdownOpen && !event.target.closest('.nav-dropdown')) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isDropdownOpen]);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -35,6 +52,7 @@ const Navbar = () => {
   const handleDropdownItemClick = (path) => {
     navigate(path);
     setIsDropdownOpen(false);
+    setIsMobileMenuOpen(false);
   };
 
   return (
@@ -74,7 +92,7 @@ const Navbar = () => {
         {/* Analytics Dropdown */}
         <div className="nav-dropdown">
           <button 
-            className={`nav-link dropdown-toggle ${isDropdownOpen ? 'active' : ''}`}
+            className={`nav-link dropdown-toggle ${isAnalyticsActive ? 'active' : ''}`}
             onClick={toggleDropdown}
             aria-haspopup="true"
             aria-expanded={isDropdownOpen}
@@ -124,8 +142,14 @@ const Navbar = () => {
         <button className="action-btn" aria-label="Help">
           <FaRegQuestionCircle className="action-icon" />
         </button>
-        <div className="profile-avatar" onClick={() => handleNavigation('/profile')}>
-          <FaUserCircle className="profile-icon" />
+        <div className="profile-section" onClick={() => handleNavigation('/profile')}>
+          <div className="profile-avatar">
+            <FaUser className="profile-icon" />
+          </div>
+          <div className="profile-info">
+            <span className="profile-name">Owner</span>
+            <span className="profile-role">Administrator</span>
+          </div>
         </div>
         
         {/* Mobile Menu Toggle */}
@@ -141,9 +165,9 @@ const Navbar = () => {
       {/* Mobile Menu */}
       <div className={`navbar-menu ${isMobileMenuOpen ? 'open' : ''}`}>
         <NavLink 
-          to="/" 
+          to="/dashboard" 
           className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
-          onClick={() => handleNavigation('/')}
+          onClick={() => handleNavigation('/dashboard')}
         >
           <FaChartBar className="nav-icon" />
           Dashboard
@@ -160,7 +184,7 @@ const Navbar = () => {
 
         <div className="mobile-dropdown">
           <button 
-            className={`nav-link dropdown-toggle ${isDropdownOpen ? 'active' : ''}`}
+            className={`nav-link dropdown-toggle ${isAnalyticsActive ? 'active' : ''}`}
             onClick={toggleDropdown}
           >
             <FaChartPie className="nav-icon" />
