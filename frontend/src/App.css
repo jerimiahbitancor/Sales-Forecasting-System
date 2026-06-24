@@ -193,6 +193,7 @@ input[type="checkbox"]:focus {
   position: relative;
   overflow: hidden;
   min-width: 300px;
+  justify-content: center;
 }
 
 .btn-primary::before {

@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import { useState } from 'react';
 import { FaInfoCircle } from 'react-icons/fa';
-import Navbar from '../../../Navbar/Navbar';
+import Navbar from '../../../components/Navbar/Navbar';
 import '../../../dashboard/pages/Dashboard.css';
 import './ProductPerformance.css';
 

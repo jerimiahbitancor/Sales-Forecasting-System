@@ -2,22 +2,11 @@
 import React, { useState } from "react";
 import {
   FiUploadCloud,
-  FiDownload,
-  FiAlertCircle,
-  FiSearch,
-  FiFilter,
-  FiTrash2,
-  FiTrendingUp,
-  FiFolder,
-  FiBarChart2,
-  FiSettings,
-  FiBell,
-  FiInfo,
-  FiChevronDown,
-  FiGrid,
+  FiAlertCircle
 } from "react-icons/fi";
 import "./DataManagement.css";
-import Navbar from "../../Navbar/Navbar";
+import Navbar from "../../components/Navbar/Navbar";
+import UploadData from "../components/UploadData";
 
 const DataManagement = () => {
   const [uploadedFile, setUploadedFile] = useState(null);
@@ -66,6 +55,14 @@ const DataManagement = () => {
     console.log(`Fixing issue at row ${row}`);
   };
 
+  // Define tabs configuration
+  const tabs = [
+    { id: "upload", label: "Sales Data Upload" },
+    { id: "mapping", label: "Menu & Ingredient Mapping" },
+        { id: "historical", label: "Historical Data Storage" },
+
+  ];
+
   return (
     <div className="data-management-wrapper">
       <Navbar />
@@ -108,185 +105,20 @@ const DataManagement = () => {
           </div>
 
           {/* Tabbed Container */}
-          <div className="tabbed-container">
-            {/* Tabs Header */}
-            <div className="tabs-header">
-              <button
-                className={`tab-btn ${activeTab === "upload" ? "active" : ""}`}
-                onClick={() => setActiveTab("upload")}
-              >
-                Sales Data Upload
-              </button>
-              <button
-                className={`tab-btn ${activeTab === "historical" ? "active" : ""}`}
-                onClick={() => setActiveTab("historical")}
-              >
-                Historical Data Storage
-              </button>
-              <button
-                className={`tab-btn ${activeTab === "mapping" ? "active" : ""}`}
-                onClick={() => setActiveTab("mapping")}
-              >
-                Menu & Ingredient Mapping
-              </button>
-            </div>
-
-            {/* Tab Content: Sales Data Upload */}
-            {activeTab === "upload" && (
-              <div className="tab-content">
-                <div className="upload-container">
-                  <div className="upload-header">
-                    <div>
-                      <h2 className="upload-title">Upload New Sales Data</h2>
-                      <p className="upload-subtitle">
-                        Drag and drop your sales export below.
-                      </p>
-                    </div>
-                    
-                  </div>
-
-                  {/* Drag and Drop Zone */}
-                  <div
-                    className={`drop-zone ${isDragging ? "dragging" : ""} ${uploadedFile ? "uploaded" : ""}`}
-                    onDrop={handleFileDrop}
-                    onDragOver={handleDragOver}
-                    onDragLeave={handleDragLeave}
-                    onClick={() => document.getElementById("fileInput").click()}
-                  >
-                    <div className="drop-zone-icon">
-                      <FiUploadCloud size={32} />
-                    </div>
-                    {uploadedFile ? (
-                      <div className="uploaded-file-info">
-                        <p className="file-name">{uploadedFile.name}</p>
-                        <p className="file-size">
-                          {(uploadedFile.size / 1024).toFixed(2)} KB
-                        </p>
-                        <button
-                          className="remove-file"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            setUploadedFile(null);
-                          }}
-                        >
-                          Remove
-                        </button>
-                      </div>
-                    ) : (
-                      <>
-                        <p className="drop-zone-text">
-                          Drag and Drop Files or{" "}
-                          <span className="browse-link">Browse</span>
-                        </p>
-                        <p className="drop-zone-formats">
-                          Supported formats: CSV, .XLSX (Max 20MB)
-                        </p>
-                      </>
-                    )}
-                    <input
-                      type="file"
-                      id="fileInput"
-                      className="file-input"
-                      accept=".csv,.xlsx"
-                      onChange={handleFileSelect}
-                    />
-                  </div>
-
-                  {/* Data Preview */}
-                  <div className="data-preview">
-                    <div className="preview-header">
-                      <h3 className="preview-title">Preview & Validation</h3>
-                      <div className="preview-status">
-                        <span className="status-badge success">
-                          <span className="status-dot"></span>
-                          File ready
-                        </span>
-                        <span className="status-separator">|</span>
-                        <span className="status-records">
-                          156 records found
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="preview-stats">
-                      <div className="stat-box">
-                        <p className="stat-label">Valid Records</p>
-                        <p className="stat-value success">152</p>
-                      </div>
-                      <div className="stat-box">
-                        <p className="stat-label">Invalid Records</p>
-                        <p className="stat-value error">4</p>
-                      </div>
-                      <div className="stat-box">
-                        <p className="stat-label">System Match</p>
-                        <p className="stat-value">98%</p>
-                      </div>
-                    </div>
-
-                    {/* Validation Issues */}
-                    <div className="validation-issues">
-                      <div className="issues-header">
-                        <FiAlertCircle size={16} className="issues-icon" />
-                        <p className="issues-title">
-                          Validation Issues Identified
-                        </p>
-                      </div>
-                      <div className="issues-list">
-                        <div className="issue-item">
-                          <span className="issue-text">
-                            Row 42: Invalid Date Format
-                          </span>
-                          <button
-                            className="issue-fix-btn"
-                            onClick={() => handleFixIssue(42)}
-                          >
-                            Fix now
-                          </button>
-                        </div>
-                        <div className="issue-item">
-                          <span className="issue-text">
-                            Row 89: Missing Transaction ID
-                          </span>
-                          <button
-                            className="issue-fix-btn"
-                            onClick={() => handleFixIssue(89)}
-                          >
-                            Fix now
-                          </button>
-                        </div>
-                        <div className="issue-item">
-                          <span className="issue-text">
-                            Row 112: Category 'Beverage' mismatch
-                          </span>
-                          <button
-                            className="issue-fix-btn"
-                            onClick={() => handleFixIssue(112)}
-                          >
-                            Fix now
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Action Buttons */}
-                    <div className="action-buttons">
-                      <div className="buttonsact">
-                         <button className="btn-secondary" onClick={handleDiscard}>
-                        Discard
-                      </button>
-                        <button
-                          className="btn-primary"
-                          onClick={handleConfirmUpload}
-                        >
-                          Confirm & Process Upload
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
+          <UploadData  
+            activeTab={activeTab} 
+            setActiveTab={setActiveTab}
+            tabs={tabs}
+            uploadedFile={uploadedFile}
+            isDragging={isDragging}
+            handleFileDrop={handleFileDrop}
+            handleFileSelect={handleFileSelect}
+            handleDragOver={handleDragOver}
+            handleDragLeave={handleDragLeave}
+            handleConfirmUpload={handleConfirmUpload}
+            handleDiscard={handleDiscard}
+            handleFixIssue={handleFixIssue}
+          />
         </div>
       </main>
     </div>

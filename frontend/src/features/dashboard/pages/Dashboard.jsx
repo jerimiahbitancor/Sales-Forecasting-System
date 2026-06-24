@@ -5,7 +5,7 @@ import {
   FaArrowUp,
   FaInfoCircle
 } from 'react-icons/fa';
-import Navbar from '../../Navbar/Navbar';
+import Navbar from '../../components/Navbar/Navbar';
 import './Dashboard.css';
 
 const Dashboard = () => {
