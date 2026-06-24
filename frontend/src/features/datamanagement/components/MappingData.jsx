@@ -1,7 +1,6 @@
 // components/MappingData.jsx
-import React, { useState } from "react";
+import { useState } from "react";
 import { 
-  FiSearch, 
   FiPlus, 
   FiEdit2, 
   FiTrash2, 

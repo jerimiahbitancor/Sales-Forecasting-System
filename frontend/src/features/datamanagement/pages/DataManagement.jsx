@@ -1,8 +1,7 @@
 // DataManagement.jsx
-import React, { useState } from "react";
+import { useState } from "react";
 import {
-  FiUploadCloud,
-  FiAlertCircle
+  
 } from "react-icons/fi";
 import "./DataManagement.css";
 import Navbar from "../../components/Navbar/Navbar";

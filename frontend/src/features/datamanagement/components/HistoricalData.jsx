@@ -1,7 +1,6 @@
 // components/HistoricalData.jsx
-import React, { useState } from "react";
+import { useState } from "react";
 import { 
-  FiSearch, 
   FiChevronLeft, 
   FiChevronRight, 
   FiDownload,

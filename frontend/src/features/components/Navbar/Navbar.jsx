@@ -9,7 +9,6 @@ import {
   FaCog,
   FaRegBell,
   FaRegQuestionCircle,
-  FaUserCircle,
   FaUser
 } from 'react-icons/fa';
 import './Navbar.css';
