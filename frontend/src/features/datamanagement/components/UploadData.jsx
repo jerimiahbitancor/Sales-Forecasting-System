@@ -1,10 +1,9 @@
 // components/UploadData.jsx
-import React, { useState } from "react";
+import  { useState } from "react";
 import {
   FiUploadCloud,
   FiAlertCircle,
   FiCheckCircle,
-  FiXCircle
 } from "react-icons/fi";
 import HistoricalData from "./HistoricalData";
 import MappingData from "./MappingData";
@@ -194,7 +193,7 @@ const UploadData = ({
     issues: [
       { item: " Sisig", message: "Missing ingredient mapping" },
       { item: "Chicken Poppers", message: "Duplicate entry" },
-      { item: "<Ta></Ta>psilog", message: "Category has no items" }
+      { item: "Tapsilog", message: "Category has no items" }
     ]
   };
 

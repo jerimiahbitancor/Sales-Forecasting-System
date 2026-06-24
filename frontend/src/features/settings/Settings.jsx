@@ -7,7 +7,6 @@ import {
   FiSliders, 
   FiDatabase,
   FiBookOpen,
-  FiSettings
 } from 'react-icons/fi';
 import Navbar from '../components/Navbar/Navbar.jsx';
 import BusinessProfile from './components/BusinessProfile.jsx';
