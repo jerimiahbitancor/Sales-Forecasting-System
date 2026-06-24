@@ -57,9 +57,6 @@ const Settings = () => {
               Manage your business profile, account preferences, and system configurations.
             </p>
           </div>
-          <button className="btn-save">
-            <FiSave size={16} /> Save Changes
-          </button>
         </div>
 
         <div className="content-grid">
