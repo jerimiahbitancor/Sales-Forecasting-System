@@ -200,7 +200,7 @@ const UploadData = ({
   return (
     <div className="tabbed-container">
       {/* Tabs Header */}
-      <div className="tabs-header">
+      <div className="tabs-header1">
         {tabs.map((tab) => (
           <button
             key={tab.id}
