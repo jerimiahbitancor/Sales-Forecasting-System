@@ -1,0 +1,185 @@
+/* components/ProductPerformance.css */
+
+.section-note {
+  font-size: 13px;
+  color: var(--color-text-light);
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+/* Demand Classification bars */
+.demand-bar-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+
+.demand-bar-row {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  align-items: center;
+  gap: 12px;
+}
+
+.demand-bar-label {
+  font-size: 13px;
+  color: var(--color-text-primary);
+  text-align: right;
+}
+
+.demand-bar-track {
+  background-color: var(--color-bg-light);
+  border-radius: 6px;
+  height: 32px;
+  overflow: hidden;
+}
+
+.demand-bar-fill {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 10px;
+  border-radius: 6px;
+  transition: width 0.3s ease;
+}
+
+.demand-bar-value {
+  font-size: 12px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.bar--high { background-color: #e05555; }
+.bar--medium { background-color: var(--color-warning); }
+.bar--low { background-color: var(--color-success); }
+
+.legend-swatch--low { background-color: var(--color-success); }
+.legend-swatch--medium { background-color: var(--color-warning); }
+.legend-swatch--high { background-color: #e05555; }
+.legend-swatch--above { background-color: var(--color-success); }
+.legend-swatch--below { background-color: #e05555; }
+
+/* Demand level pills */
+.pill {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.pill--high { background-color: #fde2e2; color: #b42318; }
+.pill--medium { background-color: #fdf0d5; color: #9a6b0a; }
+.pill--low { background-color: #dcf5df; color: #0f7a16; }
+
+.action-signal {
+  color: var(--color-text-secondary);
+  font-size: 13px;
+}
+
+/* Ratio (diverging) bar chart */
+.ratio-bar-chart {
+  margin-bottom: 12px;
+}
+
+.ratio-bar-row {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.ratio-bar-label {
+  font-size: 13px;
+  color: var(--color-text-primary);
+  text-align: right;
+}
+
+.ratio-bar-track {
+  position: relative;
+  height: 24px;
+  background-color: var(--color-bg-light);
+  border-radius: 6px;
+}
+
+.ratio-bar-center-line {
+  position: absolute;
+  left: 50%;
+  top: -4px;
+  bottom: -4px;
+  width: 2px;
+  background-color: var(--color-border-hover);
+}
+
+.ratio-bar-fill {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-radius: 4px;
+}
+
+.ratio-bar-fill--above { background-color: #e05555; }
+.ratio-bar-fill--below { background-color: var(--color-warning); }
+
+.ratio-bar-axis {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--color-text-light);
+  margin-top: 4px;
+  padding: 0 4px;
+}
+
+.table-footnote {
+  font-size: 11px;
+  color: var(--color-text-light);
+  margin-top: 10px;
+}
+
+.value--success { color: var(--color-success); font-weight: 600; }
+.value--warning { color: var(--color-warning); font-weight: 600; }
+.value--error { color: var(--color-error); font-weight: 600; }
+
+/* Sidebar: Product Status groups */
+.status-group {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--color-border-light);
+}
+
+.status-group:first-of-type {
+  margin-top: 8px;
+}
+
+.status-group-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.status-group-subtitle {
+  font-size: 12px;
+  color: var(--color-text-light);
+  margin-bottom: 10px;
+}
+
+.analytics-table--compact th,
+.analytics-table--compact td {
+  padding: 8px 10px;
+  font-size: 12px;
+}
+
+@media (max-width: 640px) {
+  .demand-bar-row,
+  .ratio-bar-row {
+    grid-template-columns: 90px 1fr;
+  }
+
+  .demand-bar-label,
+  .ratio-bar-label {
+    font-size: 11px;
+  }
+}
