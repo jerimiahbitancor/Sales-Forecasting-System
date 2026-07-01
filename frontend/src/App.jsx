@@ -5,8 +5,7 @@ import ChefDuoLanding from './features/landing/ChefDuoLanding';
 //import ForgotPassword from '../src/features/auth/pages/forgot-password/ForgotPassword';
 import Dashboard from './features/dashboard/pages/Dashboard';
 import DataManagement from './features/datamanagement/pages/DataManagement';
-import Forecasting from './features/auth/pages/Analytics/Forecasting';
-import ProductPerformance from './features/auth/pages/Analytics/ProductPerformance';
+import Analytics from './features/Analytics/pages/Analytics';
 import Settings from './features/settings/Settings';
 import './App.css';
 
@@ -22,9 +21,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path='/data-management' element={<DataManagement />} />
-          <Route path='/analytics' element={<Navigate to="/forecasting" replace />} />
-          <Route path='/forecasting' element={<Forecasting />} />
-          <Route path='/product-performance' element={<ProductPerformance />} />
+          <Route path='/analytics' element={<Analytics/>} />
           <Route path='/settings' element={<Settings />} />
           {/* <Route path="/forgot-password" element={<ForgotPassword />} /> */}
         </Routes>
