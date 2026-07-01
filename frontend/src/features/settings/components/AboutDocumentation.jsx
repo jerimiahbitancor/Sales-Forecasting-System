@@ -57,7 +57,7 @@ function AboutDocumentation() {
               className={`documentation-card ${selectedDoc === index ? 'active' : ''}`}
               onClick={() => setSelectedDoc(index)}
             >
-              <div className="card-header"></div>
+              <div className="card-header1"></div>
               <p className="card-title">{doc.title}</p>
             </button>
           ))}
