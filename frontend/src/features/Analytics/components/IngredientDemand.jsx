@@ -1,5 +1,7 @@
 // components/IngredientDemand.jsx
+import { useState } from "react";
 import { FiChevronDown, FiSearch, FiCalendar, FiDownload } from "react-icons/fi";
+import DatePicker from "./shared/DatePicker.jsx";
 import InfoBanner from "./shared/InfoBanner.jsx";
 import "./shared/InfoBanner.css";
 import "./IngredientDemand.css";
@@ -43,6 +45,8 @@ function cellLevel(dayIndex, highDay) {
 }
 
 function IngredientDemand() {
+  const [selectedRange, setSelectedRange] = useState([new Date(), new Date()]);
+
   return (
     <>
       <div className="analytics-col-main">
@@ -50,14 +54,9 @@ function IngredientDemand() {
           <h2 className="analytics-card-title">Estimated ingredients to prepare</h2>
 
           <div className="analytics-filter-row">
-            <span className="filter-pill">
-              <FiCalendar size={14} /> Week: June 20–26, 2026 <FiChevronDown size={14} />
-            </span>
+            <DatePicker value={selectedRange} onChange={setSelectedRange} mode="range" />
             <span className="filter-search">
               <FiSearch size={14} /> Search Product
-            </span>
-            <span className="filter-pill">
-              Date <FiChevronDown size={14} />
             </span>
           </div>
 

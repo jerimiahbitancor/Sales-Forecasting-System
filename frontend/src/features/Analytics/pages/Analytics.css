@@ -161,7 +161,6 @@
 /* Generic filter row (week picker / search / dropdown) used in every tab */
 .analytics-filter-row {
   display: flex;
-  flex-wrap: wrap;
   gap: 12px;
   margin-bottom: 16px;
 }
