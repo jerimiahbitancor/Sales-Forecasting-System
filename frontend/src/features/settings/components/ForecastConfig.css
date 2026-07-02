@@ -1,0 +1,135 @@
+/* Styles for ForecastConfig component - matches provided design */
+.fc-root {
+  padding: 28px;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color: #2b2b2b;
+}
+
+.fc-inner {
+  display: flex;
+  gap: 24px;
+  align-items: stretch;
+  flex-wrap: wrap;
+}
+
+.fc-card {
+  background: #efe9df;
+  border-radius: 8px;
+  padding: 28px;
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.fc-left {
+  flex: 1 1 520px;
+  min-width: 320px;
+}
+
+.fc-right {
+  flex: 0 0 420px;
+  min-width: 300px;
+}
+
+.fc-title {
+  margin: 0 0 16px 0;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.fc-desc-card {
+  background: #fff;
+  padding: 14px 18px;
+  border-radius: 6px;
+  color: #333;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.04);
+  margin-bottom: 18px;
+  font-size: 14px;
+}
+
+.fc-control-card {
+  background: #fff;
+  border-radius: 6px;
+  padding: 18px;
+  margin-bottom: 24px;
+}
+
+.fc-slider-row {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.fc-percent {
+  font-weight: 600;
+  color: #111;
+}
+
+.fc-slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 8px;
+  border-radius: 6px;
+  background: linear-gradient(90deg,#c4c0b8 0%, #e9e6e0 100%);
+  outline: none;
+}
+.fc-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #1f1f1f;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+  cursor: pointer;
+}
+.fc-scale {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: #333;
+  margin-top: 6px;
+}
+
+.fc-save {
+  display: inline-block;
+  width: 240px;
+  background: #8b1916;
+  color: #fff;
+  padding: 14px 18px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  cursor: pointer;
+}
+
+.fc-right-title {
+  margin-top: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.fc-bullets {
+  margin: 12px 0 18px 18px;
+}
+.fc-bullets li {
+  margin-bottom: 8px;
+}
+
+.fc-note {
+  margin: 8px 0;
+  font-size: 14px;
+}
+
+.fc-meta {
+  margin: 8px 0;
+  font-size: 14px;
+}
+
+@media (max-width: 880px) {
+  .fc-inner { flex-direction: column; }
+  .fc-right { order: 2; }
+  .fc-left { order: 1; }
+}
