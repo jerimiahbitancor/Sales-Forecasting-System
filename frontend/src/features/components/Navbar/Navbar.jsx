@@ -88,40 +88,14 @@ const Navbar = () => {
           Data Management
         </NavLink>
         
-        {/* Analytics Dropdown */}
-        <div className="nav-dropdown">
-          <button 
-            className={`nav-link dropdown-toggle ${isAnalyticsActive ? 'active' : ''}`}
-            onClick={toggleDropdown}
-            aria-haspopup="true"
-            aria-expanded={isDropdownOpen}
-          >
-            <FaChartPie className="nav-icon" />
-            Analytics
-            <FaChevronDown className={`nav-arrow ${isDropdownOpen ? 'rotated' : ''}`} />
-          </button>
-          
-          {isDropdownOpen && (
-            <div className="dropdown-menu">
-              <NavLink 
-                to="/forecasting" 
-                className={({ isActive }) => `dropdown-item ${isActive ? 'active' : ''}`}
-                onClick={() => handleDropdownItemClick('/forecasting')}
-              >
-                <FaChartPie className="dropdown-icon" />
-                Forecasting
-              </NavLink>
-              <NavLink 
-                to="/product-performance" 
-                className={({ isActive }) => `dropdown-item ${isActive ? 'active' : ''}`}
-                onClick={() => handleDropdownItemClick('/product-performance')}
-              >
-                <FaChartBar className="dropdown-icon" />
-                Product Performance
-              </NavLink>
-            </div>
-          )}
-        </div>
+        <NavLink
+          to="/analytics"
+          className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+          onClick={() => setIsMobileMenuOpen(false)}
+        >
+          <FaChartPie className="nav-icon" />
+          Analytics
+        </NavLink>
 
         <NavLink 
           to="/settings" 
@@ -181,36 +155,14 @@ const Navbar = () => {
           Data Management
         </NavLink>
 
-        <div className="mobile-dropdown">
-          <button 
-            className={`nav-link dropdown-toggle ${isAnalyticsActive ? 'active' : ''}`}
-            onClick={toggleDropdown}
-          >
-            <FaChartPie className="nav-icon" />
-            Analytics
-            <FaChevronDown className={`nav-arrow ${isDropdownOpen ? 'rotated' : ''}`} />
-          </button>
-          {isDropdownOpen && (
-            <div className="mobile-dropdown-menu">
-              <NavLink 
-                to="/forecasting" 
-                className={({ isActive }) => `dropdown-item ${isActive ? 'active' : ''}`}
-                onClick={() => handleDropdownItemClick('/forecasting')}
-              >
-                <FaChartPie className="dropdown-icon" />
-                Forecasting
-              </NavLink>
-              <NavLink 
-                to="/product-performance" 
-                className={({ isActive }) => `dropdown-item ${isActive ? 'active' : ''}`}
-                onClick={() => handleDropdownItemClick('/product-performance')}
-              >
-                <FaChartBar className="dropdown-icon" />
-                Product Performance
-              </NavLink>
-            </div>
-          )}
-        </div>
+        <NavLink
+          to="/analytics"
+          className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+          onClick={() => handleNavigation('/analytics')}
+        >
+          <FaChartPie className="nav-icon" />
+          Analytics
+        </NavLink>
 
         <NavLink 
           to="/settings" 

@@ -22,9 +22,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path='/data-management' element={<DataManagement />} />
-          <Route path='/analytics' element={<Navigate to="/forecasting" replace />} />
-          <Route path='/forecasting' element={<Forecasting />} />
-          <Route path='/product-performance' element={<ProductPerformance />} />
+          <Route path='/analytics' element={<Analytics/>} />
           <Route path='/settings' element={<Settings />} />
           {/* <Route path="/forgot-password" element={<ForgotPassword />} /> */}
         </Routes>

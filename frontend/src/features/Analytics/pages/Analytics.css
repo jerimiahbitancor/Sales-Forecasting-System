@@ -1,0 +1,246 @@
+/* pages/Analytics.css */
+:root {
+  --color-primary: #EDE9DE;
+  --color-secondary: #FEB161;
+  --color-dark-gray: #1C2632;
+  --color-red-primary: #7A0101;
+
+  --color-success: #0F9918;
+  --color-warning: #FFB800;
+  --color-error: #EF4444;
+  --color-uploading: #3354BA;
+
+  --color-white: #FFFFFF;
+  --color-black: #000000;
+  --color-text-primary: #1C2632;
+  --color-text-secondary: #5c403c;
+  --color-text-light: #6c757d;
+
+  --color-border: #ced4da;
+  --color-border-light: #e8e0dd;
+  --color-border-hover: #adb5bd;
+
+  --color-bg-primary: #EDE9DE;
+  --color-bg-white: #FFFFFF;
+  --color-bg-light: #f8f9fa;
+  --color-bg-hover: #f1f2f3;
+}
+
+.analytics-wrapper {
+  min-height: 100vh;
+  background-color: var(--color-bg-primary);
+}
+
+.analytics-main {
+  position: relative;
+  padding: 32px;
+  max-width: 1440px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Breadcrumb header */
+.analytics-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.analytics-header .page-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.breadcrumb-separator {
+  font-size: 20px;
+  color: #9ca3af;
+}
+
+.breadcrumb-current {
+  font-size: 18px;
+  color: #6b7280;
+}
+
+/* Tab bar */
+.analytics-tabs {
+  display: flex;
+  background-color: var(--color-bg-white);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 2px 10px -2px rgba(0, 0, 0, 0.03);
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.analytics-tab {
+  flex: 1;
+  padding: 18px 24px;
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  font-size: 15px;
+  font-weight: 600;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.analytics-tab:hover {
+  color: var(--color-red-primary);
+  background-color: rgba(122, 1, 1, 0.03);
+}
+
+.analytics-tab.active {
+  color: var(--color-red-primary);
+  border-bottom-color: var(--color-red-primary);
+}
+
+/* Content area shared by all three tabs: two-column layout, left column
+   wider (main charts/tables), right column narrower (summary/sidebar) */
+.analytics-content {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+.analytics-col-main {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 0; /* prevents charts/tables from overflowing the grid track */
+}
+
+.analytics-col-side {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+@media (min-width: 1100px) {
+  .analytics-content {
+    grid-template-columns: 1.7fr 1fr;
+    align-items: start;
+  }
+}
+
+/* Card shell reused by every section across the three tabs */
+.analytics-card {
+  background-color: var(--color-bg-white);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 2px 10px -2px rgba(0, 0, 0, 0.03);
+}
+
+.analytics-card-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: 16px;
+}
+
+.btn-generate-report {
+  width: 100%;
+  padding: 14px;
+  background-color: var(--color-bg-white);
+  color: var(--color-red-primary);
+  border: 1.5px solid var(--color-red-primary);
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-generate-report:hover {
+  background-color: var(--color-red-primary);
+  color: var(--color-white);
+}
+
+/* Generic filter row (week picker / search / dropdown) used in every tab */
+.analytics-filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.filter-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background-color: var(--color-bg-light);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--color-text-primary);
+  cursor: pointer;
+}
+
+.filter-search {
+  flex: 1;
+  min-width: 180px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  color: var(--color-text-light);
+  font-size: 13px;
+}
+
+/* Generic data table used across all three tabs */
+.analytics-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.analytics-table th {
+  text-align: left;
+  padding: 10px 12px;
+  background-color: var(--color-bg-light);
+  color: var(--color-text-light);
+  font-weight: 600;
+  border-bottom: 1px solid var(--color-border-light);
+  white-space: nowrap;
+}
+
+.analytics-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--color-border-light);
+  color: var(--color-text-primary);
+}
+
+.analytics-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+@media (max-width: 768px) {
+  .analytics-main {
+    padding: 16px;
+  }
+
+  .analytics-tabs {
+    flex-direction: column;
+  }
+
+  .analytics-tab {
+    border-bottom: 1px solid var(--color-border-light);
+    border-left: 3px solid transparent;
+  }
+
+  .analytics-tab.active {
+    border-bottom-color: var(--color-border-light);
+    border-left-color: var(--color-red-primary);
+  }
+
+  .analytics-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}

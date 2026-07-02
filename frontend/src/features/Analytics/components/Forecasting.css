@@ -1,0 +1,227 @@
+/* components/Forecasting.css */
+
+.metric-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.metric-box {
+  padding: 16px;
+  background-color: var(--color-bg-light);
+  border-radius: 10px;
+  text-align: center;
+}
+
+.metric-label {
+  font-size: 13px;
+  color: var(--color-text-light);
+  margin-bottom: 6px;
+}
+
+.metric-value {
+  font-size: 28px;
+  font-weight: 700;
+  font-family: "Courier New", monospace;
+}
+
+.metric-value--success {
+  color: var(--color-success);
+}
+
+.metric-caption {
+  font-size: 11px;
+  margin-top: 4px;
+}
+
+.metric-caption--success {
+  color: var(--color-success);
+}
+
+.chart-block {
+  margin-top: 16px;
+  padding: 16px;
+  background-color: var(--color-bg-light);
+  border-radius: 12px;
+}
+
+.chart-block-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.chart-block-subtitle {
+  font-size: 12px;
+  color: var(--color-text-light);
+  margin-bottom: 12px;
+}
+
+.accuracy-chart {
+  width: 100%;
+  height: 160px;
+  display: block;
+}
+
+.accuracy-chart-area {
+  fill: rgba(15, 153, 24, 0.12);
+  stroke: none;
+}
+
+.accuracy-chart-line {
+  fill: none;
+  stroke: var(--color-success);
+  stroke-width: 2.5;
+}
+
+.accuracy-chart-threshold {
+  stroke: var(--color-warning);
+  stroke-width: 1.5;
+  stroke-dasharray: 6 5;
+}
+
+.sales-chart {
+  width: 100%;
+  height: 240px;
+  display: block;
+  margin: 8px 0 4px;
+}
+
+.sales-chart-line-actual {
+  fill: none;
+  stroke: var(--color-success);
+  stroke-width: 2.5;
+}
+
+.sales-chart-line-forecast {
+  fill: none;
+  stroke: var(--color-uploading);
+  stroke-width: 2.5;
+}
+
+.sales-chart-label {
+  font-size: 10px;
+  fill: var(--color-text-light);
+  text-anchor: middle;
+}
+
+.chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin: 8px 0 16px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+
+.legend-swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  display: inline-block;
+}
+
+.legend-swatch--success { background-color: var(--color-success); }
+.legend-swatch--warning { background-color: var(--color-warning); }
+.legend-swatch--actual { background-color: var(--color-success); }
+.legend-swatch--forecast { background-color: var(--color-uploading); }
+
+.empty-row {
+  text-align: center;
+  color: var(--color-text-light);
+  font-style: italic;
+  padding: 24px 12px;
+}
+
+/* Sidebar: feature importance list */
+.feature-importance {
+  margin-top: 4px;
+}
+
+.feature-importance-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.feature-importance-subtitle {
+  font-size: 12px;
+  color: var(--color-text-light);
+  margin-bottom: 10px;
+}
+
+.feature-list {
+  list-style: none;
+}
+
+.feature-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--color-border-light);
+  font-size: 14px;
+  color: var(--color-text-primary);
+}
+
+.feature-row:last-child {
+  border-bottom: none;
+}
+
+.feature-value {
+  font-weight: 700;
+  color: var(--color-red-primary);
+}
+
+/* Sidebar: training info */
+.training-info {
+  margin-top: 8px;
+  padding-top: 16px;
+  border-top: 1px solid var(--color-border-light);
+}
+
+.training-info-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.training-info-subtitle {
+  font-size: 12px;
+  color: var(--color-text-light);
+  margin-bottom: 10px;
+}
+
+.training-info-list dt {
+  font-size: 13px;
+  color: var(--color-text-primary);
+}
+
+.training-info-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  font-size: 13px;
+}
+
+.training-info-row dd {
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.training-info-row .value--success {
+  color: var(--color-success);
+  font-weight: 700;
+}
+
+@media (max-width: 640px) {
+  .metric-pair {
+    grid-template-columns: 1fr;
+  }
+}
