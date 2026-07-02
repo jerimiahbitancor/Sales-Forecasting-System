@@ -1,7 +1,4 @@
 // components/ProductPerformance.jsx
-import { useState } from "react";
-import { FiChevronDown, FiSearch, FiCalendar } from "react-icons/fi";
-import DatePicker from "./shared/DatePicker.jsx";
 import { FiChevronDown, FiSearch, FiCalendar, FiInfo } from "react-icons/fi";
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
@@ -186,7 +183,6 @@ function RatioBar({ label, ratio }) {
 // ---------------------------------------------------------------------
 function ProductPerformance() {
   const maxQty = Math.max(...demandRows.map((r) => r.forecastQty));
-  const [selectedRange, setSelectedRange] = useState([new Date(), new Date()]);
 
   return (
     <>
@@ -212,9 +208,14 @@ function ProductPerformance() {
           </h2>
 
           <div className="analytics-filter-row">
-            <DatePicker value={selectedRange} onChange={setSelectedRange} mode="range" />
+            <span className="filter-pill">
+              <FiCalendar size={14} /> Week: June 20–26, 2026 <FiChevronDown size={14} />
+            </span>
             <span className="filter-search">
               <FiSearch size={14} /> Search Product
+            </span>
+            <span className="filter-pill">
+              Date <FiChevronDown size={14} />
             </span>
           </div>
 
@@ -288,7 +289,9 @@ function ProductPerformance() {
           </h2>
 
           <div className="analytics-filter-row">
-            <DatePicker value={selectedRange} onChange={setSelectedRange} mode="range" />
+            <span className="filter-pill">
+              <FiCalendar size={14} /> Week: June 20–26, 2026 <FiChevronDown size={14} />
+            </span>
             <span className="filter-search">
               <FiSearch size={14} /> Search Product
             </span>

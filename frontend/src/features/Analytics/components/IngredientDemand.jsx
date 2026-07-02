@@ -1,7 +1,4 @@
 // components/IngredientDemand.jsx
-import { useState } from "react";
-import { FiChevronDown, FiSearch, FiCalendar, FiDownload } from "react-icons/fi";
-import DatePicker from "./shared/DatePicker.jsx";
 import { FiChevronDown, FiSearch, FiCalendar, FiDownload, FiInfo } from "react-icons/fi";
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
@@ -134,8 +131,6 @@ function cellLevel(dayIndex, highDay) {
 // Main Component
 // ---------------------------------------------------------------------
 function IngredientDemand() {
-  const [selectedRange, setSelectedRange] = useState([new Date(), new Date()]);
-
   return (
     <>
       <div className="analytics-col-main">
@@ -159,9 +154,14 @@ function IngredientDemand() {
           </h2>
 
           <div className="analytics-filter-row">
-            <DatePicker value={selectedRange} onChange={setSelectedRange} mode="range" />
+            <span className="filter-pill">
+              <FiCalendar size={14} /> Week: June 20–26, 2026 <FiChevronDown size={14} />
+            </span>
             <span className="filter-search">
               <FiSearch size={14} /> Search Product
+            </span>
+            <span className="filter-pill">
+              Date <FiChevronDown size={14} />
             </span>
           </div>
 

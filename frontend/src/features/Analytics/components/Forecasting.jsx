@@ -1,7 +1,5 @@
 // components/Forecasting.jsx
-import { useState } from "react";
 import { FiChevronDown, FiSearch, FiCalendar, FiInfo, FiZap } from "react-icons/fi";
-import DatePicker from "./shared/DatePicker.jsx";
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 import 'tippy.js/animations/scale.css';
@@ -26,32 +24,6 @@ const salesPrediction = {
     { label: "Fri", actual: 3900, forecast: 3300 },
     { label: "Sat", actual: 4600, forecast: 3700 },
     { label: "Sun", actual: 5300, forecast: 3900, future: true },
-  ],
-  rows: [
-    { date: "June 23, 2026", product: "Poppers & Rice", actualQty: 48, forecastQty: 45, actualRevenue: "₱2,400", forecastRevenue: "₱2,250" },
-    { date: "June 23, 2026", product: "Breaded Tonkatsu", actualQty: 32, forecastQty: 35, actualRevenue: "₱1,920", forecastRevenue: "₱2,100" },
-    { date: "June 23, 2026", product: "Chick & Fries", actualQty: 27, forecastQty: 28, actualRevenue: "₱1,350", forecastRevenue: "₱1,400" },
-    { date: "June 24, 2026", product: "Cheesy Tapa", actualQty: 22, forecastQty: 23, actualRevenue: "₱2,550", forecastRevenue: "₱2,800" },
-    { date: "June 24, 2026", product: "Poppers & Rice", actualQty: 52, forecastQty: 52, actualRevenue: "₱3,120", forecastRevenue: "₱3,000" },
-  ],
-};
-
-const demandPrediction = {
-  weekLabel: "Week: June 20–26, 2026",
-  points: [
-    { label: "Mon", actual: 18, forecast: 20 },
-    { label: "Tue", actual: 22, forecast: 21 },
-    { label: "Wed", actual: 25, forecast: 24 },
-    { label: "Thu", actual: 30, forecast: 28 },
-    { label: "Fri", actual: 36, forecast: 34 },
-    { label: "Sat", actual: 40, forecast: 38 },
-    { label: "Sun", actual: 44, forecast: 45, future: true },
-  ],
-  rows: [
-    { date: "June 23, 2026", product: "Poppers & Rice", actualQty: 48, forecastQty: 45, unit: "servings" },
-    { date: "June 23, 2026", product: "Breaded Tonkatsu", actualQty: 32, forecastQty: 35, unit: "servings" },
-    { date: "June 23, 2026", product: "Chick & Fries", actualQty: 27, forecastQty: 28, unit: "servings" },
-    { date: "June 24, 2026", product: "Cheesy Tapa", actualQty: 22, forecastQty: 23, unit: "servings" },
   ],
   rows: [],
 };
@@ -273,7 +245,7 @@ function AccuracyChart({ data }) {
   );
 }
 
-function LineChart({ points }) {
+function SalesPredictionChart({ points }) {
   const width = 700;
   const height = 260;
   const values = points.flatMap((p) => [p.actual, p.forecast]);
@@ -316,10 +288,6 @@ function LineChart({ points }) {
 function Forecasting() {
   const latestAccuracy = accuracyHistory[accuracyHistory.length - 1];
   const errorRate = (100 - latestAccuracy).toFixed(1);
-  const [mode, setMode] = useState("Sales");
-  const [selectedRange, setSelectedRange] = useState([new Date(), new Date()]);
-
-  const chartPoints = mode === "Sales" ? salesPrediction.points : demandPrediction.points;
 
   return (
     <>
@@ -404,23 +372,27 @@ function Forecasting() {
           </h2>
 
           <div className="analytics-filter-row">
-            <DatePicker value={selectedRange} onChange={setSelectedRange} mode="range" />
+            <span className="filter-pill">
+              <FiCalendar size={14} /> {salesPrediction.weekLabel} <FiChevronDown size={14} />
+            </span>
             <span className="filter-search">
               <FiSearch size={14} /> Search Product
             </span>
-            <select className="filter-pill" style={{ width: '120px' }} value={mode} onChange={(e) => setMode(e.target.value)}>
-              <option value="Sales">Sales</option>
-              <option value="Demand">Demand</option>
-            </select>
+            <span className="filter-pill">
+              Sales <FiChevronDown size={14} />
+            </span>
+            <span className="filter-pill">
+              Date and Time <FiChevronDown size={14} />
+            </span>
           </div>
 
-          <LineChart points={chartPoints} />
+          <SalesPredictionChart points={salesPrediction.points} />
           <div className="chart-legend">
             <span className="legend-item">
-              <span className="legend-swatch legend-swatch--actual" /> {mode === "Sales" ? "Actual Sales" : "Actual Demand"}
+              <span className="legend-swatch legend-swatch--actual" /> Actual Sales
             </span>
             <span className="legend-item">
-              <span className="legend-swatch legend-swatch--forecast" /> {mode === "Sales" ? "Forecasted Sales" : "Forecasted Demand"}
+              <span className="legend-swatch legend-swatch--forecast" /> Forecasted Sales
             </span>
           </div>
 
