@@ -14,89 +14,56 @@ const Forecasting = () => {
 
   // Tooltips
   const tooltips = {
-    forecastAccuracy: (
-      <div style={{ padding: '4px 0', fontSize: '13px', lineHeight: '1.6' }}>
-        <strong style={{ color: '#fe6161', display: 'block', marginBottom: '6px' }}>
-          Forecast Accuracy
-        </strong>
-        This tells you how close your forecasts have been to what actually happened.
-        <br/><br/>
-        <div style={{ margin: '8px 0' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-            <span style={{ color: '#22c55e', fontWeight: 'bold' }}>●</span>
-            <span><strong>Above 90%</strong> - Excellent. You can rely on these numbers.</span>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-            <span style={{ color: '#60a5fa', fontWeight: 'bold' }}>●</span>
-            <span><strong>80-90%</strong> - Good. Still useful for planning.</span>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-            <span style={{ color: '#fbbf24', fontWeight: 'bold' }}>●</span>
-            <span><strong>70-80%</strong> - Fair. Use with caution.</span>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ color: '#ef4444', fontWeight: 'bold' }}>●</span>
-            <span><strong>Below 70%</strong> - Low. Consider uploading more sales data.</span>
-          </div>
-        </div>
-        <br/>
-        Accurate forecasts help you order ingredients closer to actual demand, reducing waste and stockouts.
-        <br/><br/>
-        <span style={{ color: '#94a3b8', fontSize: '12px' }}>
-          MAPE = (1/n) × Σ |(Actual − Forecast) / Actual| × 100
-        </span>
-      </div>
-    ),
-    demandPrediction: (
-      <div style={{ padding: '4px 0', fontSize: '13px', lineHeight: '1.6' }}>
-        <strong style={{ color: '#fe6161', display: 'block', marginBottom: '6px' }}>
-          Demand Prediction
-        </strong>
-        This shows how many servings of each dish you're expected to sell.
-        <br/><br/>
-        <div style={{ margin: '8px 0' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-            <span style={{ display: 'inline-block', width: '20px', height: '3px', background: '#22c55e', borderRadius: '2px' }}></span>
-            <span><strong>Green Line</strong> = What actually sold</span>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-            <span style={{ display: 'inline-block', width: '20px', height: '3px', background: '#60a5fa', borderRadius: '2px' }}></span>
-            <span><strong>Blue Line</strong> = What the system predicted</span>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ display: 'inline-block', width: '20px', height: '3px', background: '#1e40af', borderRadius: '2px' }}></span>
-            <span><strong>Purple Line</strong> = What's predicted for the coming days</span>
-          </div>
-        </div>
-        <br/>
-        When blue and green stay close together, the system is reading your business accurately.
-        <br/><br/>
-        <span style={{ color: '#94a3b8', fontSize: '12px' }}>
-          = Σ(k=1 to K) f_k(x_i) - XGBoost prediction output
-        </span>
-      </div>
-    ),
     salesPrediction: (
       <div style={{ padding: '4px 0', fontSize: '13px', lineHeight: '1.6' }}>
-        <strong style={{ color: '#fe6161', display: 'block', marginBottom: '6px' }}>
-          Sales Prediction
+        <strong style={{ color: '#60a5fa', display: 'block', marginBottom: '6px' }}>
+        Daily & Weekly Forecast
         </strong>
-        This shows your expected income based on predicted servings sold, multiplied by each item's price.
+        View sales predictions for each product on a daily and weekly basis.
         <br/><br/>
-        Use this for daily and weekly financial planning.
+        This helps you:
+        <br/>
+        • Plan inventory levels
+        <br/>
+        • Schedule staff accordingly
+        <br/>
+        • Identify demand patterns
         <br/><br/>
         <span style={{ color: '#94a3b8', fontSize: '12px' }}>
-          Forecasted Revenue = × Unit Price
+          Toggle between Daily, Weekly, and Monthly views
+        </span>
+      </div>
+    ),
+    forecastAccuracy: (
+      <div style={{ padding: '4px 0', fontSize: '13px', lineHeight: '1.6' }}>
+        <strong style={{ color: '#34d399', display: 'block', marginBottom: '6px' }}>
+          Model Performance Metrics
+        </strong>
+        <div style={{ margin: '8px 0' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+            <span><strong>MAPE</strong> (Mean Absolute Percentage Error)</span>
+            <span style={{ color: '#60a5fa' }}>8.2%</span>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+            <span><strong>MAE</strong> (Mean Absolute Error)</span>
+            <span style={{ color: '#60a5fa' }}>₱1,245</span>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <span><strong>RMSE</strong> (Root Mean Square Error)</span>
+            <span style={{ color: '#60a5fa' }}>₱1,890</span>
+          </div>
+        </div>
+        <br/>
+        <span style={{ color: '#94a3b8', fontSize: '12px' }}>
+          Lower values indicate better prediction accuracy
         </span>
       </div>
     ),
     modelInsights: (
       <div style={{ padding: '4px 0', fontSize: '13px', lineHeight: '1.6' }}>
-        <strong style={{ color: '#fe6161', display: 'block', marginBottom: '6px' }}>
-          Model Insights
+        <strong style={{ color: '#fbbf24', display: 'block', marginBottom: '6px' }}>
+          Feature Importance & Training Info
         </strong>
-        This shows what factors most influence your forecasts - like whether it's a payday, a weekend, or based on recent sales trends. It also shows when your forecast model was last updated.
-        <br/><br/>
         <div style={{ margin: '8px 0' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
             <span>Historical Sales Data</span>
@@ -107,17 +74,15 @@ const Forecasting = () => {
             <span style={{ color: '#22c55e' }}>25%</span>
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
-            <span>Payday Flag</span>
+            <span>Seasonal Trends</span>
             <span style={{ color: '#22c55e' }}>18%</span>
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <span>Holiday Flag</span>
+            <span>Weather Data</span>
             <span style={{ color: '#22c55e' }}>12%</span>
           </div>
         </div>
         <br/>
-        Forecasts update automatically whenever you upload new sales data - there's no need to manually refresh.
-        <br/><br/>
         <span style={{ color: '#94a3b8', fontSize: '12px' }}>
           Model trained on 90 days of data • Last updated: Today
         </span>
@@ -125,8 +90,8 @@ const Forecasting = () => {
     ),
     exportReport: (
       <div style={{ padding: '4px 0', fontSize: '13px', lineHeight: '1.6' }}>
-        <strong style={{ color: '#fe6161', display: 'block', marginBottom: '6px' }}>
-          Export Forecast Report
+        <strong style={{ color: '#60a5fa', display: 'block', marginBottom: '6px' }}>
+          📄 Export Forecast Report
         </strong>
         Download your forecast data in PDF or Excel format.
         <br/><br/>
@@ -141,8 +106,8 @@ const Forecasting = () => {
     ),
     forecastedItems: (
       <div style={{ padding: '4px 0', fontSize: '13px', lineHeight: '1.6' }}>
-        <strong style={{ color: '#fe6161', display: 'block', marginBottom: '6px' }}>
-          Products Forecasted
+        <strong style={{ color: '#60a5fa', display: 'block', marginBottom: '6px' }}>
+          📦 Products Forecasted
         </strong>
         Total number of products currently being forecasted by the system.
         <br/><br/>
@@ -157,8 +122,8 @@ const Forecasting = () => {
     ),
     avgAccuracy: (
       <div style={{ padding: '4px 0', fontSize: '13px', lineHeight: '1.6' }}>
-        <strong style={{ color: '#fe6161', display: 'block', marginBottom: '6px' }}>
-          Average Accuracy
+        <strong style={{ color: '#34d399', display: 'block', marginBottom: '6px' }}>
+          🎯 Prediction Accuracy
         </strong>
         Average accuracy across all forecasted products.
         <br/><br/>
@@ -171,8 +136,8 @@ const Forecasting = () => {
     ),
     highestForecast: (
       <div style={{ padding: '4px 0', fontSize: '13px', lineHeight: '1.6' }}>
-        <strong style={{ color: '#fe6161', display: 'block', marginBottom: '6px' }}>
-          Highest Forecast
+        <strong style={{ color: '#fbbf24', display: 'block', marginBottom: '6px' }}>
+          📈 Highest Forecast
         </strong>
         The product with the highest predicted sales volume.
         <br/><br/>
@@ -187,8 +152,8 @@ const Forecasting = () => {
     ),
     growthRate: (
       <div style={{ padding: '4px 0', fontSize: '13px', lineHeight: '1.6' }}>
-        <strong style={{ color: '#fe6161', display: 'block', marginBottom: '6px' }}>
-          Growth Rate
+        <strong style={{ color: '#22c55e', display: 'block', marginBottom: '6px' }}>
+          📊 Growth Rate
         </strong>
         Expected increase in overall sales volume.
         <br/><br/>
@@ -320,9 +285,9 @@ const Forecasting = () => {
             <div className="chart-header">
               <div>
                 <h2 className="chart-title">
-                  Demand Prediction
+                  Sales Prediction Chart
                   <Tippy
-                    content={tooltips.demandPrediction}
+                    content={tooltips.salesPrediction}
                     placement="right"
                     animation="scale"
                     duration={200}
@@ -337,7 +302,7 @@ const Forecasting = () => {
                     </span>
                   </Tippy>
                 </h2>
-                <p className="chart-description">Actual Quantity vs Forecasted Quantity vs Future Forecast</p>
+                <p className="chart-description">Actual Sales vs Forecast vs Future Forecast</p>
               </div>
 
               <div className="chart-controls">
@@ -367,11 +332,11 @@ const Forecasting = () => {
               <div className="chart-legend">
                 <div className="legend-item">
                   <span className="legend-line green"></span>
-                  Actual Quantity
+                  Actual Sales
                 </div>
                 <div className="legend-item">
                   <span className="legend-line blue"></span>
-                  Forecasted Quantity
+                  Forecasted Sales
                 </div>
                 <div className="legend-item">
                   <span className="legend-line dark-blue"></span>
@@ -406,7 +371,7 @@ const Forecasting = () => {
                   <span>0</span>
                 </div>
 
-                <div className="axis-label-vertical">Quantity Sold</div>
+                <div className="axis-label-vertical">Sales</div>
 
                 <div className="x-axis-labels">
                   <span>Mon</span>

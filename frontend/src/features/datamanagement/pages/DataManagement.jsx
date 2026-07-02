@@ -83,21 +83,21 @@ const DataManagement = () => {
             <div className="summary-card">
               <div className="summary-card-content">
                 <p className="summary-label">Sales Records</p>
-                <p className="summary-value">12,450</p>
+                <p className="summary-val">12,450</p>
                 <p className="summary-subtext">Total Active</p>
               </div>
             </div>
             <div className="summary-card">
               <div className="summary-card-content">
                 <p className="summary-label">Menu Items</p>
-                <p className="summary-value">142</p>
+                <p className="summary-val">142</p>
                 <p className="summary-subtext">Mapped Items</p>
               </div>
             </div>
             <div className="summary-card">
               <div className="summary-card-content">
                 <p className="summary-label">Last Sync</p>
-                <p className="summary-value">2h ago</p>
+                <p className="summary-val">2h ago</p>
                 <p className="summary-subtext">June 20, 2025</p>
               </div>
             </div>
