@@ -1,5 +1,5 @@
 // components/Navbar.jsx
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { 
   FaChartBar,
@@ -9,49 +9,30 @@ import {
   FaCog,
   FaRegBell,
   FaRegQuestionCircle,
-  FaUser,
-  FaChartLine,
-  FaBoxes,
-  FaClipboardList,
-  FaStore,
-  FaUtensils
+  FaUser
 } from 'react-icons/fa';
 import './Navbar.css';
 
 const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const dropdownRef = useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
 
   // Check if any analytics sub-route is active
-  const isAnalyticsActive = location.pathname === '/analytics' || 
-                           location.pathname === '/forecasting' || 
-                           location.pathname === '/product-performance' ||
-                           location.pathname === '/ingredient-demand';
+  const isAnalyticsActive = location.pathname === '/forecasting' || 
+                           location.pathname === '/product-performance';
 
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      if (isDropdownOpen && !event.target.closest('.nav-dropdown')) {
         setIsDropdownOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
-  // Close mobile menu on resize to desktop
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth > 992 && isMobileMenuOpen) {
-        setIsMobileMenuOpen(false);
-      }
-    };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, [isMobileMenuOpen]);
+  }, [isDropdownOpen]);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -87,7 +68,7 @@ const Navbar = () => {
         <span className="brand-text">Sales Forecasting</span>
       </div>
 
-      {/* Navigation - Desktop */}
+      {/* Navigation */}
       <nav className="navbar-nav">
         <NavLink 
           to="/dashboard" 
@@ -107,42 +88,14 @@ const Navbar = () => {
           Data Management
         </NavLink>
         
-        {/* Analytics Dropdown */}
-        <div className="nav-dropdown" ref={dropdownRef}>
-          <button 
-            className={`nav-link dropdown-toggle ${isAnalyticsActive ? 'active' : ''}`}
-            onClick={toggleDropdown}
-            aria-expanded={isDropdownOpen}
-          >
-            <FaChartPie className="nav-icon" />
-            Analytics
-            <FaChevronDown className={`dropdown-arrow ${isDropdownOpen ? 'open' : ''}`} />
-          </button>
-          
-          <div className={`dropdown-menu ${isDropdownOpen ? 'open' : ''}`}>
-            <button 
-              className="dropdown-item"
-              onClick={() => handleDropdownItemClick('/forecasting')}
-            >
-              <FaChartLine className="dropdown-icon" />
-              <span>Forecasting</span>
-            </button>
-            <button 
-              className="dropdown-item"
-              onClick={() => handleDropdownItemClick('/product-performance')}
-            >
-              <FaBoxes className="dropdown-icon" />
-              <span>Product Performance</span>
-            </button>
-            <button 
-              className="dropdown-item"
-              onClick={() => handleDropdownItemClick('/ingredient-demand')}
-            >
-              <FaUtensils className="dropdown-icon" />
-              <span>Ingredient Demand</span>
-            </button>
-          </div>
-        </div>
+        <NavLink
+          to="/analytics"
+          className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+          onClick={() => setIsMobileMenuOpen(false)}
+        >
+          <FaChartPie className="nav-icon" />
+          Analytics
+        </NavLink>
 
         <NavLink 
           to="/settings" 
@@ -202,39 +155,14 @@ const Navbar = () => {
           Data Management
         </NavLink>
 
-        {/* Mobile Analytics with Sub-items */}
-        <div className="mobile-dropdown">
-          <div className="mobile-dropdown-header" onClick={() => {
-            navigate('/analytics');
-            setIsMobileMenuOpen(false);
-          }}>
-            <FaChartPie className="nav-icon" />
-            Analytics
-          </div>
-          <div className="mobile-dropdown-items">
-            <button 
-              className="mobile-dropdown-item"
-              onClick={() => handleDropdownItemClick('/forecasting')}
-            >
-              <FaChartLine className="dropdown-icon" />
-              Forecasting
-            </button>
-            <button 
-              className="mobile-dropdown-item"
-              onClick={() => handleDropdownItemClick('/product-performance')}
-            >
-              <FaBoxes className="dropdown-icon" />
-              Product Performance
-            </button>
-            <button 
-              className="mobile-dropdown-item"
-              onClick={() => handleDropdownItemClick('/ingredient-demand')}
-            >
-              <FaUtensils className="dropdown-icon" />
-              Ingredient Demand
-            </button>
-          </div>
-        </div>
+        <NavLink
+          to="/analytics"
+          className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+          onClick={() => handleNavigation('/analytics')}
+        >
+          <FaChartPie className="nav-icon" />
+          Analytics
+        </NavLink>
 
         <NavLink 
           to="/settings" 
