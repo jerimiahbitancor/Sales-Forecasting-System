@@ -6,10 +6,20 @@
 }
 
 .fc-inner {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 24px;
   align-items: stretch;
-  flex-wrap: wrap;
+  width: 100%;
+}
+
+@media (max-width: 880px) {
+  .fc-inner {
+    display: flex;
+    flex-direction: column;
+  }
+  .fc-right { order: 2; }
+  .fc-left { order: 1; }
 }
 
 .fc-card {
@@ -22,14 +32,17 @@
   height: 100%;
 }
 
-.fc-left {
-  flex: 1 1 520px;
-  min-width: 320px;
+.fc-left,
+.fc-right {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
 }
 
+.fc-left,
 .fc-right {
-  flex: 0 0 420px;
-  min-width: 300px;
+  width: 100%;
 }
 
 .fc-title {
