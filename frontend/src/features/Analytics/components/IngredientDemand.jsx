@@ -1,6 +1,5 @@
 // components/IngredientDemand.jsx
 import { useState } from "react";
-import { FiChevronDown, FiSearch, FiCalendar, FiDownload } from "react-icons/fi";
 import DatePicker from "./shared/DatePicker.jsx";
 import { FiChevronDown, FiSearch, FiCalendar, FiDownload, FiInfo } from "react-icons/fi";
 import Tippy from '@tippyjs/react';

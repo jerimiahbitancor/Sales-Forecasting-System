@@ -112,7 +112,7 @@ const tooltips = {
   demandPrediction: (
     <div style={{ padding: '4px 0', fontSize: '13px', lineHeight: '1.6' }}>
       <strong style={{ color: '#FEB161', display: 'block', marginBottom: '6px' }}>
-        Demand Prediction
+        Prediction
       </strong>
       This shows how many servings of each dish you're expected to sell.
       <br/><br/>
