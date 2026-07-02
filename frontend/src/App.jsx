@@ -5,7 +5,8 @@ import ChefDuoLanding from './features/landing/ChefDuoLanding';
 //import ForgotPassword from '../src/features/auth/pages/forgot-password/ForgotPassword';
 import Dashboard from './features/dashboard/pages/Dashboard';
 import DataManagement from './features/datamanagement/pages/DataManagement';
-import Analytics from './features/Analytics/pages/Analytics';
+import Forecasting from './features/analytics/Forecasting';
+import ProductPerformance from './features/analytics/ProductPerformance';
 import Settings from './features/settings/Settings';
 import './App.css';
 
