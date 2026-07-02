@@ -2,16 +2,15 @@
 import { useState } from "react";
 import { FiChevronDown, FiSearch, FiCalendar, FiInfo, FiZap } from "react-icons/fi";
 import DatePicker from "./shared/DatePicker.jsx";
+import Tippy from '@tippyjs/react';
+import 'tippy.js/dist/tippy.css';
+import 'tippy.js/animations/scale.css';
 import InfoBanner from "./shared/InfoBanner.jsx";
 import "./shared/InfoBanner.css";
 import "./Forecasting.css";
 
 // ---------------------------------------------------------------------
-// Mock data. Replace these with the real API responses from the
-// forecasting endpoint (GET /api/forecast/accuracy, /api/forecast/sales)
-// once the backend contract is finalized. Keeping the shape of this data
-// stable (same field names) means swapping the source later is a
-// one-line change, not a rewrite of the chart/table markup below.
+// Mock data — replace with real API responses
 // ---------------------------------------------------------------------
 const accuracyHistory = [
   78, 76, 80, 79, 83, 81, 85, 84, 88, 86, 89, 91, 90, 92.6,
@@ -54,6 +53,7 @@ const demandPrediction = {
     { date: "June 23, 2026", product: "Chick & Fries", actualQty: 27, forecastQty: 28, unit: "servings" },
     { date: "June 24, 2026", product: "Cheesy Tapa", actualQty: 22, forecastQty: 23, unit: "servings" },
   ],
+  rows: [],
 };
 
 const featureImportance = [
@@ -72,10 +72,157 @@ const trainingInfo = {
 };
 
 // ---------------------------------------------------------------------
-// Small inline SVG line chart. Built by hand (no charting library) so we
-// don't add a new dependency to the project just for two charts — if the
-// project later adopts recharts/chart.js project-wide, these two chart
-// functions are the only things that would need to change.
+// Tooltips
+// ---------------------------------------------------------------------
+const tooltips = {
+  forecastAccuracy: (
+    <div style={{ padding: '4px 0', fontSize: '13px', lineHeight: '1.6' }}>
+      <strong style={{ color: '#FEB161', display: 'block', marginBottom: '6px' }}>
+        Forecast Accuracy
+      </strong>
+      This tells you how close your forecasts have been to what actually happened.
+      <br/><br/>
+      <div style={{ margin: '8px 0' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+          <span style={{ color: '#22c55e', fontWeight: 'bold' }}>●</span>
+          <span><strong>Above 90%</strong> — Excellent. You can rely on these numbers.</span>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+          <span style={{ color: '#60a5fa', fontWeight: 'bold' }}>●</span>
+          <span><strong>80-90%</strong> — Good. Still useful for planning.</span>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+          <span style={{ color: '#fbbf24', fontWeight: 'bold' }}>●</span>
+          <span><strong>70-80%</strong> — Fair. Use with caution.</span>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <span style={{ color: '#ef4444', fontWeight: 'bold' }}>●</span>
+          <span><strong>Below 70%</strong> — Low. Consider uploading more sales data.</span>
+        </div>
+      </div>
+      <br/>
+      Accurate forecasts help you order ingredients closer to actual demand, reducing waste and stockouts.
+      <br/><br/>
+      <span style={{ color: '#94a3b8', fontSize: '12px' }}>
+        MAPE = (1/n) × Σ |(Actual − Forecast) / Actual| × 100
+      </span>
+    </div>
+  ),
+  
+  demandPrediction: (
+    <div style={{ padding: '4px 0', fontSize: '13px', lineHeight: '1.6' }}>
+      <strong style={{ color: '#FEB161', display: 'block', marginBottom: '6px' }}>
+        Demand Prediction
+      </strong>
+      This shows how many servings of each dish you're expected to sell.
+      <br/><br/>
+      <div style={{ margin: '8px 0' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+          <span style={{ display: 'inline-block', width: '20px', height: '3px', background: '#22c55e', borderRadius: '2px' }}></span>
+          <span><strong>Green Line</strong> = What actually sold</span>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+          <span style={{ display: 'inline-block', width: '20px', height: '3px', background: '#60a5fa', borderRadius: '2px' }}></span>
+          <span><strong>Blue Line</strong> = What the system predicted</span>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <span style={{ display: 'inline-block', width: '20px', height: '3px', background: '#1e40af', borderRadius: '2px' }}></span>
+          <span><strong>Purple Line</strong> = What's predicted for the coming days</span>
+        </div>
+      </div>
+      <br/>
+      When blue and green stay close together, the system is reading your business accurately.
+      <br/><br/>
+      <span style={{ color: '#94a3b8', fontSize: '12px' }}>
+        ŷ_i = Σ(k=1 to K) f_k(x_i) — XGBoost prediction output
+      </span>
+    </div>
+  ),
+  
+  salesPrediction: (
+    <div style={{ padding: '4px 0', fontSize: '13px', lineHeight: '1.6' }}>
+      <strong style={{ color: '#FEB161', display: 'block', marginBottom: '6px' }}>
+        Sales Prediction
+      </strong>
+      This shows your expected income based on predicted servings sold, multiplied by each item's price.
+      <br/><br/>
+      Use this for daily and weekly financial planning.
+      <br/><br/>
+      <span style={{ color: '#94a3b8', fontSize: '12px' }}>
+        Forecasted Revenue = ŷ_i × Unit Price
+      </span>
+    </div>
+  ),
+  
+  modelInsights: (
+    <div style={{ padding: '4px 0', fontSize: '13px', lineHeight: '1.6' }}>
+      <strong style={{ color: '#FEB161', display: 'block', marginBottom: '6px' }}>
+        Model Insights
+      </strong>
+      This shows what factors most influence your forecasts — like whether it's a payday, a weekend, or based on recent sales trends. It also shows when your forecast model was last updated.
+      <br/><br/>
+      Forecasts update automatically whenever you upload new sales data — there's no need to manually refresh.
+      <br/><br/>
+      <span style={{ color: '#94a3b8', fontSize: '12px' }}>
+        Feature importance derived from XGBoost gain-based scoring
+      </span>
+    </div>
+  ),
+  
+  accuracyOverTime: (
+    <div style={{ padding: '4px 0', fontSize: '13px', lineHeight: '1.6' }}>
+      <strong style={{ color: '#FEB161', display: 'block', marginBottom: '6px' }}>
+        Accuracy Over Time
+      </strong>
+      Plots daily or weekly accuracy across a rolling window (last 30 days).
+      <br/><br/>
+      The <strong style={{ color: '#fbbf24' }}>80% threshold line</strong> marks the boundary between "Good" and "Fair" performance.
+      <br/><br/>
+      <span style={{ color: '#94a3b8', fontSize: '12px' }}>
+        Accuracy % = 100% − MAPE
+      </span>
+    </div>
+  ),
+  
+  featureImportance: (
+    <div style={{ padding: '4px 0', fontSize: '13px', lineHeight: '1.6' }}>
+      <strong style={{ color: '#FEB161', display: 'block', marginBottom: '6px' }}>
+        Feature Importance
+      </strong>
+      Shows which factors most influence your forecasts.
+      <br/><br/>
+      <div style={{ margin: '8px 0' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+          <span>Is payday</span>
+          <span style={{ color: '#22c55e' }}>92%</span>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+          <span>Holiday</span>
+          <span style={{ color: '#22c55e' }}>84%</span>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+          <span>Day of Week</span>
+          <span style={{ color: '#22c55e' }}>76%</span>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+          <span>Sales Lag (7 days)</span>
+          <span style={{ color: '#22c55e' }}>68%</span>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <span>Sales Lag (1 day)</span>
+          <span style={{ color: '#22c55e' }}>45%</span>
+        </div>
+      </div>
+      <br/>
+      <span style={{ color: '#94a3b8', fontSize: '12px' }}>
+        Day of Week has the strongest influence on sales. Paydays (15th and 30th) also significantly boost demand.
+      </span>
+    </div>
+  ),
+};
+
+// ---------------------------------------------------------------------
+// Chart Components
 // ---------------------------------------------------------------------
 function buildLinePath(values, width, height, min, max) {
   const stepX = width / (values.length - 1);
@@ -99,17 +246,30 @@ function AccuracyChart({ data }) {
   const thresholdY = height - ((80 - min) / (max - min)) * height;
 
   return (
-    <svg viewBox={`0 0 ${width} ${height}`} className="accuracy-chart" preserveAspectRatio="none">
-      <path d={areaPath} className="accuracy-chart-area" />
-      <path d={linePath} className="accuracy-chart-line" />
-      <line
-        x1="0"
-        y1={thresholdY}
-        x2={width}
-        y2={thresholdY}
-        className="accuracy-chart-threshold"
-      />
-    </svg>
+    <Tippy
+      content={tooltips.accuracyOverTime}
+      placement="top"
+      animation="scale"
+      duration={200}
+      theme="dark"
+      arrow={true}
+      maxWidth={350}
+      interactive={true}
+    >
+      <div className="chart-wrapper">
+        <svg viewBox={`0 0 ${width} ${height}`} className="accuracy-chart" preserveAspectRatio="none">
+          <path d={areaPath} className="accuracy-chart-area" />
+          <path d={linePath} className="accuracy-chart-line" />
+          <line
+            x1="0"
+            y1={thresholdY}
+            x2={width}
+            y2={thresholdY}
+            className="accuracy-chart-threshold"
+          />
+        </svg>
+      </div>
+    </Tippy>
   );
 }
 
@@ -125,18 +285,34 @@ function LineChart({ points }) {
   const stepX = width / (points.length - 1);
 
   return (
-    <svg viewBox={`0 0 ${width} ${height}`} className="sales-chart" preserveAspectRatio="none">
-      <path d={actualPath} className="sales-chart-line-actual" />
-      <path d={forecastPath} className="sales-chart-line-forecast" />
-      {points.map((p, i) => (
-        <text key={p.label} x={i * stepX} y={height - 4} className="sales-chart-label">
-          {p.label}
-        </text>
-      ))}
-    </svg>
+    <Tippy
+      content={tooltips.demandPrediction}
+      placement="top"
+      animation="scale"
+      duration={200}
+      theme="dark"
+      arrow={true}
+      maxWidth={350}
+      interactive={true}
+    >
+      <div className="chart-wrapper">
+        <svg viewBox={`0 0 ${width} ${height}`} className="sales-chart" preserveAspectRatio="none">
+          <path d={actualPath} className="sales-chart-line-actual" />
+          <path d={forecastPath} className="sales-chart-line-forecast" />
+          {points.map((p, i) => (
+            <text key={p.label} x={i * stepX} y={height - 4} className="sales-chart-label">
+              {p.label}
+            </text>
+          ))}
+        </svg>
+      </div>
+    </Tippy>
   );
 }
 
+// ---------------------------------------------------------------------
+// Main Component
+// ---------------------------------------------------------------------
 function Forecasting() {
   const latestAccuracy = accuracyHistory[accuracyHistory.length - 1];
   const errorRate = (100 - latestAccuracy).toFixed(1);
@@ -150,7 +326,23 @@ function Forecasting() {
       <div className="analytics-col-main">
         {/* Forecast Accuracy */}
         <section className="analytics-card">
-          <h2 className="analytics-card-title">Forecast Accuracy</h2>
+          <h2 className="analytics-card-title">
+            Forecast Accuracy
+            <Tippy
+              content={tooltips.forecastAccuracy}
+              placement="right"
+              animation="scale"
+              duration={200}
+              theme="dark"
+              arrow={true}
+              maxWidth={380}
+              interactive={true}
+            >
+              <span className="info-icon-wrapper">
+                <FiInfo className="info-icon" />
+              </span>
+            </Tippy>
+          </h2>
 
           <div className="metric-pair">
             <div className="metric-box">
@@ -193,7 +385,23 @@ function Forecasting() {
 
         {/* Sales and Demand Prediction */}
         <section className="analytics-card">
-          <h2 className="analytics-card-title">Sales and Demand Prediction</h2>
+          <h2 className="analytics-card-title">
+            Sales and Demand Prediction
+            <Tippy
+              content={tooltips.salesPrediction}
+              placement="right"
+              animation="scale"
+              duration={200}
+              theme="dark"
+              arrow={true}
+              maxWidth={350}
+              interactive={true}
+            >
+              <span className="info-icon-wrapper">
+                <FiInfo className="info-icon" />
+              </span>
+            </Tippy>
+          </h2>
 
           <div className="analytics-filter-row">
             <DatePicker value={selectedRange} onChange={setSelectedRange} mode="range" />
@@ -259,7 +467,23 @@ function Forecasting() {
         </button>
 
         <section className="analytics-card">
-          <h2 className="analytics-card-title">Model Insights</h2>
+          <h2 className="analytics-card-title">
+            Model Insights
+            <Tippy
+              content={tooltips.modelInsights}
+              placement="right"
+              animation="scale"
+              duration={200}
+              theme="dark"
+              arrow={true}
+              maxWidth={350}
+              interactive={true}
+            >
+              <span className="info-icon-wrapper">
+                <FiInfo className="info-icon" />
+              </span>
+            </Tippy>
+          </h2>
 
           <InfoBanner variant="info">
             Forecasts are automatically updated each time you upload new sales data. No
@@ -267,7 +491,23 @@ function Forecasting() {
           </InfoBanner>
 
           <div className="feature-importance">
-            <p className="feature-importance-title">Feature Importance</p>
+            <p className="feature-importance-title">
+              Feature Importance
+              <Tippy
+                content={tooltips.featureImportance}
+                placement="top"
+                animation="scale"
+                duration={200}
+                theme="dark"
+                arrow={true}
+                maxWidth={350}
+                interactive={true}
+              >
+                <span className="info-icon-wrapper">
+                  <FiInfo className="info-icon-small" />
+                </span>
+              </Tippy>
+            </p>
             <p className="feature-importance-subtitle">
               What factors influence your forecasts the most?
             </p>

@@ -2,14 +2,16 @@
 import { useState } from "react";
 import { FiChevronDown, FiSearch, FiCalendar } from "react-icons/fi";
 import DatePicker from "./shared/DatePicker.jsx";
+import { FiChevronDown, FiSearch, FiCalendar, FiInfo } from "react-icons/fi";
+import Tippy from '@tippyjs/react';
+import 'tippy.js/dist/tippy.css';
+import 'tippy.js/animations/scale.css';
 import InfoBanner from "./shared/InfoBanner.jsx";
 import "./shared/InfoBanner.css";
 import "./ProductPerformance.css";
 
 // ---------------------------------------------------------------------
-// Mock data — replace with the real /api/analytics/product-performance
-// response. `zone` drives bar color, `demandLevel` drives the pill in
-// the table, and `actionSignal` is the recommended action copy.
+// Mock data
 // ---------------------------------------------------------------------
 const demandRows = [
   { product: "Poppers & Rice", forecastQty: 52, zone: "high", demandLevel: "High Demand", actionSignal: "Prepare Extra Stock" },
@@ -40,6 +42,98 @@ const inactiveProducts = [
   { product: "Kaldereta", lastSale: "20 days ago", forecastStatus: "Auto flagged in 8 days" },
 ];
 
+// ---------------------------------------------------------------------
+// Tooltips
+// ---------------------------------------------------------------------
+const tooltips = {
+  demandClassification: (
+    <div style={{ padding: '4px 0', fontSize: '13px', lineHeight: '1.6' }}>
+      <strong style={{ color: '#FEB161', display: 'block', marginBottom: '6px' }}>
+        Demand Classification
+      </strong>
+      The system automatically sorts each dish into High, Medium, or Low demand — based on that dish's own sales history, not a fixed number. A dish selling 20 servings might be "High" if it rarely sells that much.
+      <br/><br/>
+      <div style={{ margin: '8px 0' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+          <span style={{ color: '#ef4444', fontWeight: 'bold' }}>●</span>
+          <span><strong>High Demand</strong> — Prepare extra stock</span>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+          <span style={{ color: '#fbbf24', fontWeight: 'bold' }}>●</span>
+          <span><strong>Medium Demand</strong> — Standard preparation</span>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <span style={{ color: '#22c55e', fontWeight: 'bold' }}>●</span>
+          <span><strong>Low Demand</strong> — Reduce preparation</span>
+        </div>
+      </div>
+      <br/>
+      <span style={{ color: '#94a3b8', fontSize: '12px' }}>
+        High if Forecast &gt; P80 • Medium if P40 ≤ Forecast ≤ P80 • Low if Forecast &lt; P40
+      </span>
+    </div>
+  ),
+  
+  performanceRatio: (
+    <div style={{ padding: '4px 0', fontSize: '13px', lineHeight: '1.6' }}>
+      <strong style={{ color: '#FEB161', display: 'block', marginBottom: '6px' }}>
+        Performance Ratio Analysis
+      </strong>
+      This compares each dish's sales to your store's average. The center line is your store average.
+      <br/><br/>
+      <div style={{ margin: '8px 0' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+          <span style={{ color: '#22c55e', fontWeight: 'bold' }}>→</span>
+          <span><strong>Bars to the right</strong> = Selling better than average — keep these on the menu</span>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <span style={{ color: '#ef4444', fontWeight: 'bold' }}>→</span>
+          <span><strong>Bars to the left</strong> = Selling below average — consider a promo or reviewing the dish</span>
+        </div>
+      </div>
+      <br/>
+      <span style={{ color: '#94a3b8', fontSize: '12px' }}>
+        Performance Ratio = Actual Qty Sold / Rolling Average Qty Sold (all active products)
+      </span>
+    </div>
+  ),
+  
+  productStatus: (
+    <div style={{ padding: '4px 0', fontSize: '13px', lineHeight: '1.6' }}>
+      <strong style={{ color: '#FEB161', display: 'block', marginBottom: '6px' }}>
+        Product Status
+      </strong>
+      <div style={{ margin: '8px 0' }}>
+        <div style={{ marginBottom: '10px' }}>
+          <strong style={{ color: '#22c55e' }}>Active Products</strong>
+          <br/>
+          <span style={{ fontSize: '12px', color: '#94a3b8' }}>
+            These products have enough sales history and are actively being forecasted.
+          </span>
+        </div>
+        <div style={{ marginBottom: '10px' }}>
+          <strong style={{ color: '#fbbf24' }}>New Products</strong>
+          <br/>
+          <span style={{ fontSize: '12px', color: '#94a3b8' }}>
+            This product was recently added. The system needs at least 4 weeks of sales data before it can generate a reliable forecast.
+          </span>
+        </div>
+        <div>
+          <strong style={{ color: '#ef4444' }}>Inactive Products</strong>
+          <br/>
+          <span style={{ fontSize: '12px', color: '#94a3b8' }}>
+            This product hasn't sold in 28 days and has been automatically excluded from forecasting. Its sales history is still kept for your records.
+          </span>
+        </div>
+      </div>
+      <br/>
+      <span style={{ color: '#94a3b8', fontSize: '12px' }}>
+        Auto-flags products with 0 sales for 28 consecutive days • New products need 4 weeks of data
+      </span>
+    </div>
+  ),
+};
+
 const zoneClass = { high: "bar--high", medium: "bar--medium", low: "bar--low" };
 const pillClass = {
   "High Demand": "pill--high",
@@ -47,7 +141,9 @@ const pillClass = {
   "Low Demand": "pill--low",
 };
 
-// Horizontal bar: forecast qty relative to the largest value in the set
+// ---------------------------------------------------------------------
+// Chart Components
+// ---------------------------------------------------------------------
 function DemandBar({ label, qty, maxQty, zone }) {
   const widthPct = Math.max((qty / maxQty) * 100, 6);
   return (
@@ -62,9 +158,7 @@ function DemandBar({ label, qty, maxQty, zone }) {
   );
 }
 
-// Diverging bar centered on ratio = 1.0 (store average)
 function RatioBar({ label, ratio }) {
-  // Map ratio range [0.2, 1.8] onto a 0-100% track, with 1.0 at center (50%)
   const min = 0.2;
   const max = 1.8;
   const center = 50;
@@ -87,6 +181,9 @@ function RatioBar({ label, ratio }) {
   );
 }
 
+// ---------------------------------------------------------------------
+// Main Component
+// ---------------------------------------------------------------------
 function ProductPerformance() {
   const maxQty = Math.max(...demandRows.map((r) => r.forecastQty));
   const [selectedRange, setSelectedRange] = useState([new Date(), new Date()]);
@@ -96,7 +193,23 @@ function ProductPerformance() {
       <div className="analytics-col-main">
         {/* Demand Classification */}
         <section className="analytics-card">
-          <h2 className="analytics-card-title">Demand Classification</h2>
+          <h2 className="analytics-card-title">
+            Demand Classification
+            <Tippy
+              content={tooltips.demandClassification}
+              placement="right"
+              animation="scale"
+              duration={200}
+              theme="dark"
+              arrow={true}
+              maxWidth={380}
+              interactive={true}
+            >
+              <span className="info-icon-wrapper">
+                <FiInfo className="info-icon" />
+              </span>
+            </Tippy>
+          </h2>
 
           <div className="analytics-filter-row">
             <DatePicker value={selectedRange} onChange={setSelectedRange} mode="range" />
@@ -156,7 +269,23 @@ function ProductPerformance() {
 
         {/* Product Performance Ratio Analysis */}
         <section className="analytics-card">
-          <h2 className="analytics-card-title">Product Performance Ratio Analysis</h2>
+          <h2 className="analytics-card-title">
+            Product Performance Ratio Analysis
+            <Tippy
+              content={tooltips.performanceRatio}
+              placement="right"
+              animation="scale"
+              duration={200}
+              theme="dark"
+              arrow={true}
+              maxWidth={380}
+              interactive={true}
+            >
+              <span className="info-icon-wrapper">
+                <FiInfo className="info-icon" />
+              </span>
+            </Tippy>
+          </h2>
 
           <div className="analytics-filter-row">
             <DatePicker value={selectedRange} onChange={setSelectedRange} mode="range" />
@@ -229,7 +358,23 @@ function ProductPerformance() {
         </button>
 
         <section className="analytics-card">
-          <h2 className="analytics-card-title">Product Status</h2>
+          <h2 className="analytics-card-title">
+            Product Status
+            <Tippy
+              content={tooltips.productStatus}
+              placement="right"
+              animation="scale"
+              duration={200}
+              theme="dark"
+              arrow={true}
+              maxWidth={380}
+              interactive={true}
+            >
+              <span className="info-icon-wrapper">
+                <FiInfo className="info-icon" />
+              </span>
+            </Tippy>
+          </h2>
 
           <InfoBanner variant="info">
             System auto-flags products with 0 sales for 28 consecutive days for Inactive

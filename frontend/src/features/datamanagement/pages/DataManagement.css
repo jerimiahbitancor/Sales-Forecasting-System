@@ -115,10 +115,12 @@
   margin-bottom: 4px;
 }
 
-.summary-value {
-  font-size: 28px;
+.summary-val {
   font-weight: 700;
   color: #1f2937;
+  font-size: 28px;
+    font-weight: 700;
+    font-family: "Courier New", monospace;
 }
 
 .summary-subtext {

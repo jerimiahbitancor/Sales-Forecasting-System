@@ -2,19 +2,16 @@
 import { useState } from "react";
 import { FiChevronDown, FiSearch, FiCalendar, FiDownload } from "react-icons/fi";
 import DatePicker from "./shared/DatePicker.jsx";
+import { FiChevronDown, FiSearch, FiCalendar, FiDownload, FiInfo } from "react-icons/fi";
+import Tippy from '@tippyjs/react';
+import 'tippy.js/dist/tippy.css';
+import 'tippy.js/animations/scale.css';
 import InfoBanner from "./shared/InfoBanner.jsx";
 import "./shared/InfoBanner.css";
 import "./IngredientDemand.css";
 
 // ---------------------------------------------------------------------
-// Mock data — replace with the real ingredient-demand endpoint response.
-// `days` holds one { qty, level } entry per weekday; `level` drives the
-// cell color (normal / above / high) the same way the wireframe's
-// heatmap does. `buyList` backs the "Base Qty Needed / + Buffer / Total
-// to Buy" table, which is exactly the
-//   Ingredient Needed = Σ(Forecasted Servings × Recipe Qty per Serving)
-//                        × (1 + Safety Buffer%) + Staff Consumption Buffer
-// formula from the capstone's ingredient-demand formula, applied per row.
+// Mock data — replace with real API responses
 // ---------------------------------------------------------------------
 const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
@@ -31,19 +28,111 @@ const buyList = [
 ];
 
 const ingredientList = [
-  { name: "Rice", usedIn: "All dishes", qty: "21.4", unit: "kg" },
-  { name: "Pork", usedIn: "Tonkatsu Series", qty: "4.73", unit: "kg" },
-  { name: "Chicken", usedIn: "Poppers Series", qty: "1.75", unit: "kg" },
-  { name: "Tomatoes", usedIn: "Tinola", qty: "0.87", unit: "kg" },
-  { name: "Soy Sauce", usedIn: "Adobo, Sauces", qty: "0.66", unit: "L" },
+  { name: "Rice", usedIn: "All dishes", qty: "21.4", unit: "kg", isHigh: true },
+  { name: "Pork", usedIn: "Tonkatsu Series", qty: "4.73", unit: "kg", isHigh: true },
+  { name: "Chicken", usedIn: "Poppers Series", qty: "1.75", unit: "kg", isHigh: false },
+  { name: "Tomatoes", usedIn: "Tinola", qty: "0.87", unit: "kg", isHigh: false },
+  { name: "Soy Sauce", usedIn: "Adobo, Sauces", qty: "0.66", unit: "L", isHigh: false },
 ];
 
-// values relative to their own row: darker/warmer cell for the flagged
-// high-demand day, matching the wireframe's "Darker = more than usual"
+// ---------------------------------------------------------------------
+// Tooltips
+// ---------------------------------------------------------------------
+const tooltips = {
+  weeklyPlanner: (
+    <div style={{ padding: '4px 0', fontSize: '13px', lineHeight: '1.6' }}>
+      <strong style={{ color: '#FEB161', display: 'block', marginBottom: '6px' }}>
+        Weekly Ingredient Planner
+      </strong>
+      This shows which ingredients need the most attention across the week. Darker colors mean higher-than-usual demand — often on paydays or before holidays.
+      <br/><br/>
+      <div style={{ margin: '8px 0' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+          <span style={{ display: 'inline-block', width: '16px', height: '16px', background: '#93c5fd', borderRadius: '4px' }}></span>
+          <span><strong>Light Blue</strong> — Normal. Typical amount needed.</span>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+          <span style={{ display: 'inline-block', width: '16px', height: '16px', background: '#fbbf24', borderRadius: '4px' }}></span>
+          <span><strong>Amber</strong> — Above normal. More than usual.</span>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <span style={{ display: 'inline-block', width: '16px', height: '16px', background: '#ef4444', borderRadius: '4px' }}></span>
+          <span><strong>Red</strong> — High demand day. Significantly above typical.</span>
+        </div>
+      </div>
+      <br/>
+      Scan across a row to see when one ingredient spikes, or down a column to see how heavy a single day will be overall.
+      <br/><br/>
+      <span style={{ color: '#94a3b8', fontSize: '12px' }}>
+        Ingredient Needed = Σ(Forecasted Servings × Recipe Qty) × (1 + Safety Buffer%)
+      </span>
+    </div>
+  ),
+  
+  dailyShoppingList: (
+    <div style={{ padding: '4px 0', fontSize: '13px', lineHeight: '1.6' }}>
+      <strong style={{ color: '#FEB161', display: 'block', marginBottom: '6px' }}>
+        Daily Ingredient Shopping List
+      </strong>
+      This is your shopping list for tomorrow, based on predicted sales and your recipe amounts.
+      <br/><br/>
+      A safety buffer has already been added to cover unexpected orders or staff meals.
+      <br/><br/>
+      <div style={{ margin: '8px 0', background: 'rgba(254, 177, 97, 0.05)', padding: '10px 12px', borderRadius: '8px', border: '1px solid rgba(254, 177, 97, 0.1)' }}>
+        <strong style={{ color: '#fbbf24' }}>More than usual</strong>
+        <br/>
+        <span style={{ fontSize: '12px', color: '#94a3b8' }}>
+          Badge appears when today's value is above that ingredient's typical range.
+        </span>
+      </div>
+      <br/>
+      <span style={{ color: '#94a3b8', fontSize: '12px' }}>
+        Check your actual stock before buying — the system estimates what you'll need, not what you currently have.
+      </span>
+    </div>
+  ),
+  
+  calculationNote: (
+    <div style={{ padding: '4px 0', fontSize: '13px', lineHeight: '1.6' }}>
+      <strong style={{ color: '#FEB161', display: 'block', marginBottom: '6px' }}>
+        How is this calculated?
+      </strong>
+      For each dish: forecast quantity × ingredient amount per serving.
+      <br/><br/>
+      All results are added up across dishes that share an ingredient (like pork in both Adobo and Menudo), then a safety buffer is added.
+      <br/><br/>
+      <div style={{ margin: '8px 0' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '4px' }}>
+          <span><strong>Basic Qty. Needed</strong></span>
+          <span style={{ color: '#94a3b8' }}>Σ(Forecasted Servings × Recipe Qty)</span>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px', borderBottom: '1px solid rgba(255,255,255,0.05)', paddingBottom: '4px' }}>
+          <span><strong>+ Buffer</strong></span>
+          <span style={{ color: '#94a3b8' }}>Basic Qty. × Safety Buffer%</span>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <span><strong>Total to Buy</strong></span>
+          <span style={{ color: '#22c55e' }}>Basic Qty. + Buffer</span>
+        </div>
+      </div>
+      <br/>
+      <span style={{ color: '#94a3b8', fontSize: '12px' }}>
+        You can change the buffer percentage in Settings.
+      </span>
+    </div>
+  ),
+};
+
+// ---------------------------------------------------------------------
+// Helper Functions
+// ---------------------------------------------------------------------
 function cellLevel(dayIndex, highDay) {
   return dayIndex === highDay ? "high" : dayIndex % 2 === 0 ? "above" : "normal";
 }
 
+// ---------------------------------------------------------------------
+// Main Component
+// ---------------------------------------------------------------------
 function IngredientDemand() {
   const [selectedRange, setSelectedRange] = useState([new Date(), new Date()]);
 
@@ -51,7 +140,23 @@ function IngredientDemand() {
     <>
       <div className="analytics-col-main">
         <section className="analytics-card">
-          <h2 className="analytics-card-title">Estimated ingredients to prepare</h2>
+          <h2 className="analytics-card-title">
+            Estimated Ingredients to Prepare
+            <Tippy
+              content={tooltips.weeklyPlanner}
+              placement="right"
+              animation="scale"
+              duration={200}
+              theme="dark"
+              arrow={true}
+              maxWidth={380}
+              interactive={true}
+            >
+              <span className="info-icon-wrapper">
+                <FiInfo className="info-icon" />
+              </span>
+            </Tippy>
+          </h2>
 
           <div className="analytics-filter-row">
             <DatePicker value={selectedRange} onChange={setSelectedRange} mode="range" />
@@ -65,35 +170,54 @@ function IngredientDemand() {
             ingredient's typical amount. Darker = more than usual.
           </p>
 
-          <table className="analytics-table heatmap-table">
-            <thead>
-              <tr>
-                <th>No.</th>
-                <th>Ingredient</th>
-                {weekDays.map((d) => (
-                  <th key={d}>{d}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {demandGrid.map((row, i) => (
-                <tr key={row.ingredient}>
-                  <td>{i === 0 ? 1 : i === 1 ? 2 : "…"}</td>
-                  <td>{i < 2 ? row.ingredient : ""}</td>
-                  {row.values.map((v, di) => (
-                    <td key={di} className={`heatmap-cell heatmap-cell--${cellLevel(di, row.highDay)}`}>
-                      {v}
-                    </td>
+          <Tippy
+            content={tooltips.weeklyPlanner}
+            placement="top"
+            animation="scale"
+            duration={200}
+            theme="dark"
+            arrow={true}
+            maxWidth={380}
+            interactive={true}
+          >
+            <div className="heatmap-wrapper">
+              <table className="analytics-table heatmap-table">
+                <thead>
+                  <tr>
+                    <th>No.</th>
+                    <th>Ingredient</th>
+                    {weekDays.map((d) => (
+                      <th key={d}>{d}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {demandGrid.map((row, i) => (
+                    <tr key={row.ingredient}>
+                      <td>{i === 0 ? 1 : i === 1 ? 2 : "…"}</td>
+                      <td>{i < 2 ? row.ingredient : ""}</td>
+                      {row.values.map((v, di) => (
+                        <td key={di} className={`heatmap-cell heatmap-cell--${cellLevel(di, row.highDay)}`}>
+                          {v}
+                        </td>
+                      ))}
+                    </tr>
                   ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                </tbody>
+              </table>
+            </div>
+          </Tippy>
 
           <div className="chart-legend">
-            <span className="legend-item"><span className="legend-swatch legend-swatch--normal" /> Normal</span>
-            <span className="legend-item"><span className="legend-swatch legend-swatch--abovenorm" /> Above Normal</span>
-            <span className="legend-item"><span className="legend-swatch legend-swatch--highday" /> High Demand Day</span>
+            <span className="legend-item">
+              <span className="legend-swatch legend-swatch--normal" /> Normal
+            </span>
+            <span className="legend-item">
+              <span className="legend-swatch legend-swatch--abovenorm" /> Above Normal
+            </span>
+            <span className="legend-item">
+              <span className="legend-swatch legend-swatch--highday" /> High Demand Day
+            </span>
           </div>
 
           <InfoBanner variant="info">
@@ -107,8 +231,8 @@ function IngredientDemand() {
               <tr>
                 <th>No.</th>
                 <th>Ingredient</th>
-                <th>Link Dishes</th>
-                <th>Base Qty Needed</th>
+                <th>Linked Dishes</th>
+                <th>Basic Qty. Needed</th>
                 <th>+ Buffer</th>
                 <th>Total to Buy</th>
                 <th>Unit</th>
@@ -130,7 +254,23 @@ function IngredientDemand() {
           </table>
 
           <div className="calc-note">
-            <p className="calc-note-title">How is this calculated?</p>
+            <p className="calc-note-title">
+              How is this calculated?
+              <Tippy
+                content={tooltips.calculationNote}
+                placement="top"
+                animation="scale"
+                duration={200}
+                theme="dark"
+                arrow={true}
+                maxWidth={380}
+                interactive={true}
+              >
+                <span className="info-icon-wrapper">
+                  <FiInfo className="info-icon-small" />
+                </span>
+              </Tippy>
+            </p>
             <p className="calc-note-body">
               For each dish: forecast quantity × ingredient amount per serving. All results
               are added up across dishes that share an ingredient (like pork in both Adobo
@@ -144,7 +284,23 @@ function IngredientDemand() {
       <div className="analytics-col-side">
         <section className="analytics-card">
           <div className="ingredient-list-header">
-            <h2 className="analytics-card-title">Ingredient List</h2>
+            <h2 className="analytics-card-title">
+              Ingredient List
+              <Tippy
+                content={tooltips.dailyShoppingList}
+                placement="right"
+                animation="scale"
+                duration={200}
+                theme="dark"
+                arrow={true}
+                maxWidth={380}
+                interactive={true}
+              >
+                <span className="info-icon-wrapper">
+                  <FiInfo className="info-icon" />
+                </span>
+              </Tippy>
+            </h2>
             <button type="button" className="btn-export">
               <FiDownload size={14} /> Export List
             </button>
@@ -161,20 +317,36 @@ function IngredientDemand() {
             not what you currently have.
           </InfoBanner>
 
-          <ul className="ingredient-list">
-            {ingredientList.map((item) => (
-              <li key={item.name} className="ingredient-list-row">
-                <div>
-                  <p className="ingredient-list-name">{item.name}</p>
-                  <p className="ingredient-list-used">Used in: {item.usedIn}</p>
-                </div>
-                <div className="ingredient-list-qty">
-                  <span>{item.qty}</span>
-                  <span className="ingredient-list-unit">{item.unit}</span>
-                </div>
-              </li>
-            ))}
-          </ul>
+          <Tippy
+            content={tooltips.dailyShoppingList}
+            placement="top"
+            animation="scale"
+            duration={200}
+            theme="dark"
+            arrow={true}
+            maxWidth={380}
+            interactive={true}
+          >
+            <ul className="ingredient-list">
+              {ingredientList.map((item) => (
+                <li key={item.name} className="ingredient-list-row">
+                  <div>
+                    <p className="ingredient-list-name">
+                      {item.name}
+                      {item.isHigh && (
+                        <span className="badge-high">More than usual</span>
+                      )}
+                    </p>
+                    <p className="ingredient-list-used">Used in: {item.usedIn}</p>
+                  </div>
+                  <div className="ingredient-list-qty">
+                    <span>{item.qty}</span>
+                    <span className="ingredient-list-unit">{item.unit}</span>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </Tippy>
         </section>
       </div>
     </>

@@ -37,8 +37,7 @@
   grid-template-columns: 1fr 1fr;
   grid-template-areas:
     "header header"
-    "docs contact"
-    "footer footer";
+    "docs contact";
   min-height: 100vh;
   font-family: 'Plus Jakarta Sans', sans-serif;
 }
@@ -240,25 +239,6 @@
 .contact-item p {
   font-size: 14px;
   color: var(--color-text-primary);
-  margin: 0;
-}
-
-/* Footer */
-.footer {
-  grid-area: footer;
-  background: var(--color-red-primary);
-  color: var(--color-white);
-  text-align: center;
-  border-radius: 8px;
-  margin-top: 10px;
-  margin-bottom: -35px;
-  max-width: 100%;
-
-}
-
-.footer p {
-  font-size: 14px;
-  font-weight: 500;
   margin: 0;
 }
 
