@@ -1,6 +1,5 @@
 // components/ProductPerformance.jsx
 import { useState } from "react";
-import { FiChevronDown, FiSearch, FiCalendar } from "react-icons/fi";
 import DatePicker from "./shared/DatePicker.jsx";
 import { FiChevronDown, FiSearch, FiCalendar, FiInfo } from "react-icons/fi";
 import Tippy from '@tippyjs/react';
