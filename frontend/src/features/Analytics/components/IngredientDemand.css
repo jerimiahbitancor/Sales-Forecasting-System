@@ -1,0 +1,156 @@
+/* components/IngredientDemand.css */
+
+.section-note {
+  font-size: 13px;
+  color: var(--color-text-light);
+  margin-bottom: 14px;
+  line-height: 1.5;
+}
+
+/* Heatmap table */
+.heatmap-table th,
+.heatmap-table td {
+  text-align: center;
+}
+
+.heatmap-table th:nth-child(2),
+.heatmap-table td:nth-child(2) {
+  text-align: left;
+}
+
+.heatmap-cell {
+  font-weight: 600;
+  border-radius: 4px;
+}
+
+.heatmap-cell--normal {
+  background-color: #dcf5df;
+  color: #0f7a16;
+}
+
+.heatmap-cell--above {
+  background-color: #fdf0d5;
+  color: #9a6b0a;
+}
+
+.heatmap-cell--high {
+  background-color: #fde2e2;
+  color: #b42318;
+}
+
+.legend-swatch--normal { background-color: var(--color-success); }
+.legend-swatch--abovenorm { background-color: var(--color-warning); }
+.legend-swatch--highday { background-color: #e05555; }
+
+.value--success {
+  color: var(--color-success);
+  font-weight: 700;
+}
+
+/* Calculation explainer footer */
+.calc-note {
+  margin-top: 16px;
+  padding: 14px 16px;
+  background-color: var(--color-bg-light);
+  border-radius: 10px;
+}
+
+.calc-note-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: 4px;
+}
+
+.calc-note-body {
+  font-size: 12px;
+  color: var(--color-text-light);
+  line-height: 1.5;
+}
+
+/* Sidebar: Ingredient List */
+.ingredient-list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.btn-export {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background-color: var(--color-red-primary);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-export:hover {
+  background-color: #5a0101;
+}
+
+.ingredient-list-caption {
+  font-size: 13px;
+  color: var(--color-text-light);
+  margin-bottom: 12px;
+  line-height: 1.5;
+}
+
+.ingredient-list-caption strong {
+  color: var(--color-text-primary);
+}
+
+.ingredient-list {
+  list-style: none;
+  margin-top: 8px;
+}
+
+.ingredient-list-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.ingredient-list-row:last-child {
+  border-bottom: none;
+}
+
+.ingredient-list-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.ingredient-list-used {
+  font-size: 12px;
+  color: var(--color-text-light);
+  margin-top: 2px;
+}
+
+.ingredient-list-qty {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  font-weight: 700;
+  color: var(--color-red-primary);
+  white-space: nowrap;
+}
+
+.ingredient-list-unit {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+@media (max-width: 640px) {
+  .heatmap-table {
+    font-size: 11px;
+  }
+}

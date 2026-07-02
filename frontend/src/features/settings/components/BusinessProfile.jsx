@@ -1,4 +1,4 @@
-
+// BusinessProfile.jsx
 import { useState } from "react";
 import { FiUploadCloud, FiCheckCircle, FiSave } from "react-icons/fi";
 import "./BusinessProfile.css";
