@@ -994,13 +994,13 @@ const ChefDuoLanding = () => {
             border: '1px solid rgba(254, 177, 97, 0.1)'
           }}>
             <p style={{ margin: '4px 0', fontSize: '13px' }}>
-              <strong>Email:</strong> chefduo@example.com
+              <strong>Email:</strong> BCF@gmail.com
             </p>
             <p style={{ margin: '4px 0', fontSize: '13px' }}>
-              <strong>Phone:</strong> 0976 299 8368
+              <strong>Phone:</strong> 09123456789
             </p>
             <p style={{ margin: '4px 0', fontSize: '13px' }}>
-              <strong>Address:</strong> 94 San Roque St. Bagumbayan, Quezon City
+              <strong>Address:</strong> Pasig City, Metro Manila, Philippines
             </p>
             <p style={{ margin: '4px 0', fontSize: '13px' }}>
               <strong>Response Time:</strong> We aim to respond to all inquiries within 24-48 hours.
